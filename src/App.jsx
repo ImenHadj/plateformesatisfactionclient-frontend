@@ -13,6 +13,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />  {/* Utilisation de 'element' pour rendre SignUp */}
         <Route path="/forgot-password" element={<ForgotPassword />} />  {/* Route pour la page "Mot de passe oublié" */}
         <Route path="/reset-password" element={<ResetPassword />} />  {/* Route pour la page "Réinitialiser le mot de passe" */}
+
       </Routes>
     </Router>
   );

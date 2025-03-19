@@ -31,7 +31,14 @@ const SignIn = () => {
 
         console.log("Réponse du backend :", response.data);
 
-        if (response.data === "Connexion réussie !") {
+        // Vérifier si le token et les informations de l'utilisateur sont bien reçus
+        if (response.data && response.data.jwt && response.data.user) {
+            const { jwt, user } = response.data;
+
+            // Stocker le token et les informations dans le stockage local
+            localStorage.setItem("jwt", jwt);
+            localStorage.setItem("user", JSON.stringify(user));
+
             alert("Connexion réussie !");
             navigate("/dashboard");  // Redirection après connexion réussie
         } else {
@@ -42,8 +49,6 @@ const SignIn = () => {
         alert("Erreur de connexion. Vérifiez vos informations.");
     }
 };
-
-
 
   const handleGoogleSuccess = async (response) => {
     const idToken = response.credential;
@@ -58,9 +63,22 @@ const SignIn = () => {
       });
 
       if (res.ok) {
-        console.log("Connexion Google réussie !");
-        alert("Connexion Google réussie !");
-        navigate("/dashboard");
+        const data = await res.json();  // Récupérer les données de la réponse (JWT et informations utilisateur)
+        console.log("Réponse du serveur Google :", data);
+
+        if (data.jwt && data.user) {
+            const { jwt, user } = data;
+
+            // Stocker le token et les informations utilisateur dans localStorage
+            localStorage.setItem("jwt", jwt);
+            localStorage.setItem("user", JSON.stringify(user));
+
+            alert("Connexion Google réussie !");
+            navigate("/dashboard");
+        } else {
+            console.error("Échec de la connexion Google");
+            setErrorMessage("Échec de la connexion Google.");
+        }
       } else {
         console.error("Échec de l'authentification Google");
         setErrorMessage("Échec de la connexion Google.");

@@ -4,6 +4,9 @@ import SignIn from './pages/auth/SignIn';  // Importation de SignIn
 import SignUp from './pages/auth/SignUp';  // Importation de SignUp
 import ForgotPassword from './pages/auth/Forgotpassword'; // Importation de ForgotPassword
 import ResetPassword from './pages/auth/ResetPassword'; // Importation de ResetPassword
+import Dashboard from './pages/backoffice/Dashboard';
+import CreateEnqueteForm from './pages/backoffice/Enquete/createenquete';
+
 
 function App() {
   return (
@@ -13,6 +16,10 @@ function App() {
         <Route path="/signup" element={<SignUp />} />  {/* Utilisation de 'element' pour rendre SignUp */}
         <Route path="/forgot-password" element={<ForgotPassword />} />  {/* Route pour la page "Mot de passe oublié" */}
         <Route path="/reset-password" element={<ResetPassword />} />  {/* Route pour la page "Réinitialiser le mot de passe" */}
+        <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/create-enquete" element={<CreateEnqueteForm />} />  {/* Ajout de la route pour la création d'enquête */}
+
+
 
       </Routes>
     </Router>

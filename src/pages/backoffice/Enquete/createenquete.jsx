@@ -11,6 +11,7 @@ const CreateEnqueteForm = () => {
   const [titre, setTitre] = useState("");
   const [description, setDescription] = useState("");
   const [dateExpiration, setDateExpiration] = useState("");
+  const [datePublication, setDatePublication] = useState("");  // Date de publication ajoutée
   const [questions, setQuestions] = useState([{ texte: "", type: "OUVERT", options: [] }]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminId, setAdminId] = useState(null);
@@ -63,6 +64,7 @@ const CreateEnqueteForm = () => {
       titre,
       description,
       dateExpiration,
+      datePublication, // Inclure la date de publication
       admin: { id: adminId },
       questions,
     };
@@ -150,6 +152,22 @@ const CreateEnqueteForm = () => {
             margin="normal"
             value={dateExpiration}
             onChange={(e) => setDateExpiration(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            required
+            className="form-field"
+          />
+
+          {/* Nouveau champ pour la date de publication */}
+          <TextField
+            label="Date de Publication"
+            variant="outlined"
+            type="datetime-local"
+            fullWidth
+            margin="normal"
+            value={datePublication}
+            onChange={(e) => setDatePublication(e.target.value)}
             InputLabelProps={{
               shrink: true,
             }}

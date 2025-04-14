@@ -1,0 +1,300 @@
+/* Global reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    width: 100%;
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+  }
+  
+  /* Container principal */
+  .landing-abstract {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: url('/images/background1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+  }
+  
+  /* Overlay foncé transparent */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.65), rgba(255, 80, 0, 0.2));
+    z-index: 1;
+  }
+  
+  /* Navbar */
+  .abstract-navbar {
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    position: relative;
+  }
+  
+  .logo-img {
+    height: 100px;
+    opacity: 0.92;
+    border-radius: 10px;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+  
+  .animated-logo:hover {
+    transform: scale(1.08);
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    font-size: 1rem;
+  }
+  
+  .nav-links a.active,
+  .nav-links a:hover {
+    padding: 5px 12px;
+    border-radius: 25px;
+    border: 1px solid white;
+    transition: all 0.3s ease;
+  }
+  
+  /* Hero Section */
+  .abstract-hero {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 6rem;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .hero-content {
+    max-width: 600px;
+    animation: fadeIn 1.2s ease-in-out;
+  }
+  
+  .hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+  }
+  
+  .subtitle {
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+  }
+  
+  .description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+  
+  /* Boutons */
+  .button-group {
+    display: flex;
+    gap: 1.2rem;
+  }
+  
+  .read-btn,
+  .join-btn {
+    padding: 0.75rem 1.6rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: none;
+  }
+  
+  .read-btn {
+    background: white;
+    color: #FF512F;
+  }
+  
+  .read-btn:hover {
+    background: #f7c542;
+    color: white;
+  }
+  
+  .join-btn {
+    background: #FF512F;
+    color: white;
+  }
+  
+  .join-btn:hover {
+    background: #e5533d;
+  }
+  
+  /* Fade animation */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .attijari-section {
+    padding: 4rem 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    max-width: 900px;
+    margin: 5rem auto;
+    color: #1a1a1a; /* ✅ Texte plus foncé */
+    animation: fadeIn 1.2s ease-in-out forwards;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+  }
+  
+  .attijari-section.fade-in-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .attijari-content h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #feffffe0;
+    text-align: center;
+  }
+  
+  .attijari-content p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #fffefe; /* ✅ Texte foncé pour meilleure lisibilité */
+    margin-bottom: 1.2rem;
+    text-align: justify;
+  }
+  
+  /* Slider section */
+.slider-section {
+    margin: 5rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .slider-container {
+    width: 80%;
+    max-width: 1000px;
+    height: 450px;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+  
+  .slider-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: fade-in 1s ease-in-out;
+    border-radius: 20px;
+  }
+  
+  /* Animation for image */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: scale(1.03);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  /* ====== Panel Coulissant (Read More) ====== */
+.attijari-section.side-panel {
+    position: absolute;
+    top: 100px;
+    right: 50px;
+    width: 38%;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 2rem;
+    color: #ffffff;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+    animation: slideInFromRight 1s ease forwards;
+    z-index: 10;
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  
+  /* Quand visible (JS ajoutera fade-in-visible) */
+  .attijari-section.side-panel.fade-in-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  /* Animation Slide In */
+  @keyframes slideInFromRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+  .hero-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4rem;
+    width: 100%;
+  }
+  
+  .hero-text {
+    flex: 1;
+    z-index: 2;
+  }
+  
+  .hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .hero-image .slider-image {
+    max-width: 90%;
+    max-height: 400px;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: fade-in 1s ease-in-out;
+  }
+  

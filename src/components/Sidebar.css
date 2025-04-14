@@ -1,0 +1,53 @@
+/* Sidebar.css */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background: linear-gradient(to bottom, #202c7a, #7c87c5);
+    color: white;
+    padding: 30px 20px;
+    transition: transform 0.4s ease-in-out;
+    transform: translateX(0);
+    z-index: 1000;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar-menu li {
+    margin: 20px 0;
+  }
+  
+  .sidebar-menu a {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 18px;
+    transition: all 0.3s;
+  }
+  
+  .sidebar-menu a:hover {
+    transform: translateX(10px);
+    color: #ffd700;
+  }
+  
+  .sidebar-menu svg {
+    margin-right: 10px;
+  }
+  

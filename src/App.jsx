@@ -7,25 +7,35 @@ import ResetPassword from './pages/auth/ResetPassword'; // Importation de ResetP
 import Dashboard from './pages/backoffice/Dashboard';
 import CreateEnqueteForm from './pages/backoffice/Enquete/createenquete';
 import EnqueteResponseForm from './pages/frontoffice/EnqueteResponseForm';
+import LandingPage from './pages/auth/landingpage';
+import { ThemeProvider } from './components/ThemeContext';
+import Layout from "./components/Layout"; // maintenant c’est valide
 
 
 function App() {
   return (
-    <Router>
-      <Routes>  {/* Utilisation de Routes au lieu de Switch */}
-        <Route path="/signin" element={<SignIn />} />  {/* Utilisation de 'element' pour rendre SignIn */}
-        <Route path="/signup" element={<SignUp />} />  {/* Utilisation de 'element' pour rendre SignUp */}
-        <Route path="/forgot-password" element={<ForgotPassword />} />  {/* Route pour la page "Mot de passe oublié" */}
-        <Route path="/reset-password" element={<ResetPassword />} />  {/* Route pour la page "Réinitialiser le mot de passe" */}
-        <Route path="/dashboard" element={<Dashboard/>} />
-        <Route path="/create-enquete" element={<CreateEnqueteForm />} />  {/* Ajout de la route pour la création d'enquête */}
-        <Route path="/enquete/respond/:enqueteId" element={<EnqueteResponseForm />} />
+    <ThemeProvider>
+      <Router>
+        <Routes>
 
+          {/* Pages sans sidebar (auth, landing...) */}
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/landingpage" element={<LandingPage />} />
 
+          {/* Pages avec Layout (dashboard, backoffice...) */}
+          <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
+          <Route path="/create-enquete" element={<Layout><CreateEnqueteForm /></Layout>} />
 
-      </Routes>
-    </Router>
+          {/* Front-office (tu choisis si avec ou sans layout) */}
+          <Route path="/enquete/respond/:enqueteId" element={<EnqueteResponseForm />} />
+
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
-
 export default App;
+

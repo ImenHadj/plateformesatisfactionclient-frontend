@@ -1,72 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaTachometerAlt, FaTable, FaCreditCard, FaCog } from "react-icons/fa";
+import { FaBars, FaTimes, FaMoon, FaSun, FaTachometerAlt, FaTable, FaCreditCard, FaCog } from "react-icons/fa";
 import { motion } from "framer-motion";
-import "./Layout.css"; // Fichier CSS pour le style du layout (à créer)
+import { useTheme } from "./ThemeContext";
+import "./Layout.css";
 
 const Layout = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const { darkMode, toggleTheme } = useTheme();
+
   return (
     <div className="dashboard">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="sidebar-header">
-          <img src="https://via.placeholder.com/50" alt="Logo" className="logo" />
-          <h3>Creative Dashboard</h3>
-        </div>
-        <nav className="sidebar-nav">
-          <ul>
-            <li>
-              <Link to="/dashboard" className="nav-link">
-                <FaTachometerAlt /> Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link to="/tables" className="nav-link">
-                <FaTable /> Tables
-              </Link>
-            </li>
-            <li>
-              <Link to="/billing" className="nav-link">
-                <FaCreditCard /> Billing
-              </Link>
-            </li>
-            <li>
-              <Link to="/settings" className="nav-link">
-                <FaCog /> Settings
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        <div className="sidebar-footer">
-          <Link to="/logout" className="btn-logout">Logout</Link>
-        </div>
-      </aside>
+      <button className="burger-btn" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+        {isSidebarOpen ? <FaTimes /> : <FaBars />}
+      </button>
+      <button className="theme-toggle" onClick={toggleTheme}>
+        {darkMode ? <FaSun /> : <FaMoon />}
+      </button>
 
-      {/* Main Content */}
-      <main className="main-content">
-        <nav className="navbar">
-          <div className="navbar-container">
-            {/* Search bar */}
-            <input type="text" className="search-box" placeholder="Search..." />
-            <div className="navbar-icons">
-              <i className="fas fa-bell"></i>
-              <i className="fas fa-user-circle"></i>
-            </div>
-          </div>
-        </nav>
+      <motion.aside
+        className="sidebar-modern"
+        initial={{ x: -300 }}
+        animate={{ x: isSidebarOpen ? 0 : -300 }}
+        transition={{ duration: 0.4 }}
+      >
+        <h3 className="sidebar-title">Creative Dashboard</h3>
+        <ul>
+          <li><Link to="/dashboard">Dashboard</Link></li>
+          <li><Link to="/tables">Tables</Link></li>
+          <li><Link to="/billing">Billing</Link></li>
+          <li><Link to="/settings">Settings</Link></li>
+        </ul>
+      </motion.aside>
 
-        {/* Content of the page (dynamic based on route) */}
-        <section className="dashboard-content">
-          {children}
-        </section>
+      <main className="main-content" style={{ marginLeft: isSidebarOpen ? 260 : 0 }}>
+        {children}
       </main>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-container">
-          <p>&copy; 2024 Your Company</p>
-        </div>
-      </footer>
     </div>
   );
 };

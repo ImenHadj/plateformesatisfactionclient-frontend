@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, TextField, Button, Box, Typography } from '@mui/material';
-import './style.css'; // Assurez-vous d'avoir le bon fichier CSS pour le style
+import { Container, TextField, Button, Typography } from '@mui/material';
+import './style.css';
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
@@ -22,8 +22,7 @@ const ResetPassword = () => {
         null,
         { params: { email, newPassword } }
       );
-
-      setMessage(response.data);  // Affiche le message de succès
+      setMessage(response.data);
     } catch (error) {
       console.error('Erreur lors de la réinitialisation du mot de passe', error);
       setMessage('Erreur lors de la réinitialisation du mot de passe.');
@@ -31,25 +30,14 @@ const ResetPassword = () => {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        bgcolor: 'background.default',
-        position: 'relative',
-      }}
-    >
-      <Container
-              maxWidth="xs"
-              className="login-container"
-              sx={{
-                background: 'linear-gradient(45deg, #FF7F50, #FF6347)',
-                borderRadius: 4,
-                padding: 4,
-                boxShadow: 3,
-              }}
-            >
-        <Typography variant="h5" align="center" sx={{ marginBottom: 2, color: 'white' }}>
+    <div className="wrapper">
+      <Container maxWidth="xs" className="login-container">
+        <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: 2, color: 'white' }}>
           Réinitialiser le mot de passe
+        </Typography>
+
+        <Typography variant="body2" align="center" sx={{ color: '#ddd', marginBottom: 2 }}>
+          Entrez votre email et nouveau mot de passe
         </Typography>
 
         <form onSubmit={handleSubmit}>
@@ -60,18 +48,46 @@ const ResetPassword = () => {
             margin="normal"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            sx={{ backgroundColor: 'white', borderRadius: 2 }}
+            InputProps={{
+              style: {
+                color: 'white',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 12,
+              },
+            }}
+            slotProps={{
+              inputLabel: {
+                style: {
+                  color: 'white',
+                  fontWeight: 'bold',
+                },
+              },
+            }}
           />
 
           <TextField
             label="Nouveau mot de passe"
+            type="password"
             fullWidth
             required
-            type="password"
             margin="normal"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            sx={{ backgroundColor: 'white', borderRadius: 2 }}
+            InputProps={{
+              style: {
+                color: 'white',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 12,
+              },
+            }}
+            slotProps={{
+              inputLabel: {
+                style: {
+                  color: 'white',
+                  fontWeight: 'bold',
+                },
+              },
+            }}
           />
 
           <Button
@@ -80,22 +96,27 @@ const ResetPassword = () => {
             fullWidth
             sx={{
               marginTop: 2,
-              backgroundColor: '#FF6347',  // Utilisation d'une couleur spécifique
+              backgroundColor: '#FF6347',
               color: 'white',
-              borderRadius: 2,
+              borderRadius: 12,
+              fontWeight: 'bold',
+              padding: '12px 0',
+              '&:hover': {
+                backgroundColor: '#e5533d'
+              }
             }}
           >
-            Réinitialiser le mot de passe
+            Réinitialiser
           </Button>
         </form>
 
         {message && (
-          <Typography variant="body2" align="center" sx={{ marginTop: 2, color: 'white' }}>
+          <Typography variant="body2" align="center" sx={{ marginTop: 2, color: '#eee' }}>
             {message}
           </Typography>
         )}
       </Container>
-    </Box>
+    </div>
   );
 };
 

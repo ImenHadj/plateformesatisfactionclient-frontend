@@ -181,3 +181,25 @@
   margin-right: 10px;
   animation: pulse 2s infinite;
 }
+.options-container {
+  margin-top: 20px;
+}
+
+.options-list {
+  margin-top: 10px;
+}
+
+.option-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.option-item span {
+  flex: 1;
+}
+
+.add-option-button {
+  margin-top: 10px;
+}

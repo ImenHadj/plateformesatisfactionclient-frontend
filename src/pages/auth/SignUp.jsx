@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, TextField, Button, Box, Typography, MenuItem } from '@mui/material';
-import './style.css'; // Assurez-vous d'importer votre fichier CSS ici
+import { Container, TextField, Button, Typography, MenuItem } from '@mui/material';
+import './style.css';
 
 const Signup = () => {
   const [roles, setRoles] = useState([]);
@@ -10,14 +10,12 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "", // Le rôle est une chaîne, mais il sera envoyé dans un tableau
+    role: "",
   });
 
   useEffect(() => {
-    // Récupération des rôles depuis l'API
     axios.get("http://localhost:9090/api/auth/roles")
       .then(response => {
-        // Assurez-vous que response.data est un tableau
         setRoles(response.data);
       })
       .catch(error => {
@@ -41,7 +39,7 @@ const Signup = () => {
       username: formData.username,
       email: formData.email,
       password: formData.password,
-      roles: [formData.role],  // Envoyer le rôle comme un tableau
+      roles: [formData.role],
     };
 
     try {
@@ -54,27 +52,13 @@ const Signup = () => {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        bgcolor: 'background.default',
-        position: 'relative' // Assurez-vous que Box est en position relative
-      }}
-    >
-      <Container
-        maxWidth="xs"
-        className="login-container"
-        sx={{
-          background: 'linear-gradient(45deg, #FF7F50, #FF6347)',
-          borderRadius: 4,
-          padding: 4,
-          boxShadow: 3,
-        }}
-      >
-        <Typography variant="h5" align="center" sx={{ marginBottom: 2, color: 'white' }}>
+    <div className="wrapper">
+      <Container maxWidth="xs" className="login-container">
+        <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: 2, color: 'white' }}>
           Sign Up
         </Typography>
-        <Typography variant="body2" align="center" sx={{ color: 'white', marginBottom: 2 }}>
+
+        <Typography variant="body2" align="center" sx={{ color: '#ddd', marginBottom: 2 }}>
           Create your account
         </Typography>
 
@@ -87,8 +71,23 @@ const Signup = () => {
             name="username"
             value={formData.username}
             onChange={handleChange}
-            sx={{ backgroundColor: 'white', borderRadius: 2 }}
+            InputProps={{
+              style: {
+                color: 'white',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 12,
+              },
+            }}
+            slotProps={{
+              inputLabel: {
+                style: {
+                  color: 'white',
+                  fontWeight: 'bold',
+                },
+              },
+            }}
           />
+
           <TextField
             label="Email"
             fullWidth
@@ -97,8 +96,23 @@ const Signup = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            sx={{ backgroundColor: 'white', borderRadius: 2 }}
+            InputProps={{
+              style: {
+                color: 'white',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 12,
+              },
+            }}
+            slotProps={{
+              inputLabel: {
+                style: {
+                  color: 'white',
+                  fontWeight: 'bold',
+                },
+              },
+            }}
           />
+
           <TextField
             label="Password"
             type="password"
@@ -108,8 +122,23 @@ const Signup = () => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            sx={{ backgroundColor: 'white', borderRadius: 2 }}
+            InputProps={{
+              style: {
+                color: 'white',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 12,
+              },
+            }}
+            slotProps={{
+              inputLabel: {
+                style: {
+                  color: 'white',
+                  fontWeight: 'bold',
+                },
+              },
+            }}
           />
+
           <TextField
             label="Confirm Password"
             type="password"
@@ -119,10 +148,23 @@ const Signup = () => {
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
-            sx={{ backgroundColor: 'white', borderRadius: 2 }}
+            InputProps={{
+              style: {
+                color: 'white',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 12,
+              },
+            }}
+            slotProps={{
+              inputLabel: {
+                style: {
+                  color: 'white',
+                  fontWeight: 'bold',
+                },
+              },
+            }}
           />
 
-          {/* Champ de sélection du rôle */}
           <TextField
             select
             label="Select Role"
@@ -132,10 +174,24 @@ const Signup = () => {
             name="role"
             value={formData.role}
             onChange={handleChange}
-            sx={{ backgroundColor: 'white', borderRadius: 2 }}
+            InputProps={{
+              style: {
+                color: 'white',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 12,
+              },
+            }}
+            slotProps={{
+              inputLabel: {
+                style: {
+                  color: 'white',
+                  fontWeight: 'bold',
+                },
+              },
+            }}
           >
             {roles.map((role, index) => (
-              <MenuItem key={index} value={role}>
+              <MenuItem key={index} value={role} sx={{ color: 'black' }}>
                 {role}
               </MenuItem>
             ))}
@@ -149,21 +205,26 @@ const Signup = () => {
               marginTop: 2,
               backgroundColor: '#FF6347',
               color: 'white',
-              borderRadius: 2
+              borderRadius: 12,
+              fontWeight: 'bold',
+              padding: '12px 0',
+              '&:hover': {
+                backgroundColor: '#e5533d'
+              }
             }}
           >
             Sign Up Now
           </Button>
         </form>
 
-        <Typography variant="body2" align="center" sx={{ marginTop: 2 }}>
+        <Typography variant="body2" align="center" sx={{ marginTop: 2, color: '#eee' }}>
           Already have an account?{' '}
-          <a href="/signin" style={{ textDecoration: 'none', color: 'white' }}>
+          <a href="/signin" style={{ textDecoration: 'underline', color: 'white' }}>
             Login here
           </a>
         </Typography>
       </Container>
-    </Box>
+    </div>
   );
 };
 

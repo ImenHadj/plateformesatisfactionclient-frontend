@@ -14,8 +14,8 @@ const Signup = () => {
   });
 
   useEffect(() => {
-    axios.get("http://localhost:9090/api/auth/roles")
-      .then(response => {
+    axios.get("http://localhost:8083/api/auth/roles")
+    .then(response => {
         setRoles(response.data);
       })
       .catch(error => {
@@ -43,7 +43,7 @@ const Signup = () => {
     };
 
     try {
-      await axios.post("http://localhost:9090/api/auth/signup", dataToSend);
+      await axios.post("http://localhost:8083/api/auth/signup", dataToSend);
       alert("Inscription réussie !");
     } catch (error) {
       console.error("Erreur d'inscription", error);

@@ -1,4 +1,3 @@
-// src/App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  // Importation correcte
 import SignIn from './pages/auth/SignIn';  // Importation de SignIn
 import SignUp from './pages/auth/SignUp';  // Importation de SignUp
@@ -10,6 +9,7 @@ import EnqueteResponseForm from './pages/frontoffice/EnqueteResponseForm';
 import LandingPage from './pages/auth/landingpage';
 import { ThemeProvider } from './components/ThemeContext';
 import Layout from "./components/Layout"; // maintenant c’est valide
+import ListeEnquetes from './pages/backoffice/Enquete/ListeEnquetes';
 
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
           {/* Pages avec Layout (dashboard, backoffice...) */}
           <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
           <Route path="/create-enquete" element={<Layout><CreateEnqueteForm /></Layout>} />
+          <Route path="/enquetes" element={<Layout><ListeEnquetes /></Layout>} />
 
           {/* Front-office (tu choisis si avec ou sans layout) */}
           <Route path="/enquete/respond/:enqueteId" element={<EnqueteResponseForm />} />
@@ -38,4 +39,3 @@ function App() {
   );
 }
 export default App;
-

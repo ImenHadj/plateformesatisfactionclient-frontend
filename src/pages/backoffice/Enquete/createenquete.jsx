@@ -50,10 +50,9 @@ const CreateEnqueteForm = () => {
       description,
       dateExpiration,
       datePublication,
-      admin: { id: adminId },
       questions,
     };
-
+    
     const token = localStorage.getItem("jwt");
 
     if (!token) {
@@ -62,7 +61,7 @@ const CreateEnqueteForm = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:9090/admin/enquetes/create", enqueteData, {
+      const response = await axios.post("http://localhost:8083/admin/enquetes/create", enqueteData, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
@@ -83,20 +82,15 @@ const CreateEnqueteForm = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
     >
-      <motion.h2
-        className="form-title"
-        animate={{
-          x: ["-100%", "100%"],
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-          repeatType: "loop",
-          ease: "linear",
-        }}
-      >
-        Créer une Enquête
-      </motion.h2>
+      {/* ✅ Navbar ajoutée sans toucher au reste */}
+      <nav className="navbar">
+        <h2>Plateforme Satisfaction</h2>
+        <div className="nav-links">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/enquetes" className="active">Créer Enquête</a>
+        </div>
+      </nav>
+
 
       <form onSubmit={handleSubmit} className="enquete-form">
         <TextField

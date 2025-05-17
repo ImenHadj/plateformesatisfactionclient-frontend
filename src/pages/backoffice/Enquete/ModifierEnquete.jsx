@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, TextField, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
+import { Button, TextField, MenuItem, Select, InputLabel, FormControl, CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
 import { FaPlusCircle, FaSave, FaTrash } from "react-icons/fa";
 import { TypeQuestion } from "./TypeQuestion";
@@ -17,32 +17,41 @@ function ModifierEnquete() {
   const [datePublication, setDatePublication] = useState("");
   const [statut, setStatut] = useState("BROUILLON");
   const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
 
-    axios.get(`http://localhost:9090/admin/enquetes/${id}`, {
+    axios.get(`http://localhost:8083/admin/enquetes/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    .then(res => {
-      const data = res.data;
-      setTitre(data.titre);
-      setDescription(data.description);
-      setDateExpiration(data.dateExpiration);
-      setDatePublication(data.datePublication);
-      setStatut(data.statut);
-      setQuestions(data.questions);
-    })
-    .catch(err => {
-      console.error("Erreur chargement enquête:", err);
-      alert("Erreur lors du chargement de l’enquête.");
-    });
+      .then(res => {
+        const data = res.data;
+        setTitre(data.titre);
+        setDescription(data.description);
+        setDateExpiration(data.dateExpiration);
+        setDatePublication(data.datePublication);
+        setStatut(data.statut);
+        setQuestions(data.questions);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Erreur chargement enquête:", err);
+        alert("Erreur lors du chargement de l’enquête.");
+        setLoading(false);
+      });
   }, [id]);
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const updated = [...questions];
     updated[index][name] = value;
+
+    if (name === "type" && value !== "CHOIX_SIMPLE" && value !== "CHOIX_MULTIPLE") {
+      updated[index].options = [];
+    }
+
     setQuestions(updated);
   };
 
@@ -57,36 +66,45 @@ function ModifierEnquete() {
   };
 
   const removeQuestion = (index) => {
-    const updated = [...questions];
-    updated.splice(index, 1);
-    setQuestions(updated);
+    if (window.confirm("❌ Supprimer cette question ?")) {
+      const updated = [...questions];
+      updated.splice(index, 1);
+      setQuestions(updated);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
 
-    const updatedEnquete = {
-      titre,
-      description,
-      dateExpiration,
-      datePublication,
-      statut,
-      questions
-    };
+   const updatedEnquete = {
+  id: parseInt(id), // 🔥 Ajoute l'ID ici, même si l'URL le contient déjà
+  titre,
+  description,
+  dateExpiration,
+  datePublication,
+  statut,
+  questions
+};
+
 
     const token = localStorage.getItem("jwt");
 
     try {
-      await axios.put(`http://localhost:9090/admin/enquetes/${id}`, updatedEnquete, {
+      await axios.put(`http://localhost:8083/admin/enquetes/update/${id}`, updatedEnquete, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert("Enquête modifiée avec succès !");
+      alert("✅ Enquête modifiée avec succès !");
       navigate("/enquetes");
     } catch (error) {
       console.error("Erreur modification:", error);
-      alert("Échec de la modification.");
+      alert("❌ Échec de la modification.");
+    } finally {
+      setSubmitting(false);
     }
   };
+
+  if (loading) return <p style={{ textAlign: "center", padding: "2rem" }}>Chargement...</p>;
 
   return (
     <motion.div
@@ -96,7 +114,7 @@ function ModifierEnquete() {
       transition={{ duration: 0.6 }}
     >
       <nav className="navbar">
-        <h2>Modifier Enquête</h2>
+        <h2>🛠 Modifier Enquête</h2>
         <div className="nav-links">
           <a href="/dashboard">Dashboard</a>
           <a href="/enquetes" className="active">Mes Enquêtes</a>
@@ -149,14 +167,20 @@ function ModifierEnquete() {
             onChange={(e) => setStatut(e.target.value)}
             label="Statut"
           >
-            <MenuItem value="BROUILLON">BROUILLON</MenuItem>
-            <MenuItem value="PUBLIEE">PUBLIEE</MenuItem>
-            <MenuItem value="FERMEE">FERMEE</MenuItem>
+            <MenuItem value="BROUILLON">📝 BROUILLON</MenuItem>
+            <MenuItem value="PUBLIEE">✅ PUBLIEE</MenuItem>
+            <MenuItem value="EXPIREE">⏰ EXPIREE</MenuItem>
           </Select>
         </FormControl>
 
         {questions.map((q, index) => (
-          <div className="question-form" key={index}>
+          <motion.div
+            className="question-form"
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
             <TextField
               label="Texte de la question"
               name="texte"
@@ -202,27 +226,29 @@ function ModifierEnquete() {
             >
               Supprimer la question
             </Button>
-          </div>
+          </motion.div>
         ))}
 
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<FaPlusCircle />}
-          onClick={addQuestion}
-        >
-          Ajouter une question
-        </Button>
+        <div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<FaPlusCircle />}
+            onClick={addQuestion}
+          >
+            Ajouter une question
+          </Button>
 
-        <Button
-          variant="contained"
-          color="secondary"
-          type="submit"
-          startIcon={<FaSave />}
-          style={{ marginLeft: "15px" }}
-        >
-          Enregistrer les modifications
-        </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            type="submit"
+            startIcon={submitting ? <CircularProgress size={20} /> : <FaSave />}
+            disabled={submitting}
+          >
+            {submitting ? "Enregistrement..." : "Enregistrer"}
+          </Button>
+        </div>
       </form>
     </motion.div>
   );

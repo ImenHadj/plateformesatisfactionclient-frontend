@@ -1,226 +1,65 @@
-/* 🌐 Reset de base */
-html, body, #root {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #cecece, #cac3c3);
-  color: #f0f0f0;
+.dashboard-page {
+  text-align: center;
+  margin-top: 2rem;
 }
 
-/* 🔝 Navbar sombre et luxueuse */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: rgba(15, 15, 15, 0.95);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.navbar-logo {
-  height: 36px;
-  filter: drop-shadow(0 0 4px rgba(255,255,255,0.2));
-  transition: transform 0.3s ease;
-}
-
-.navbar-logo:hover {
-  transform: scale(1.05);
-}
-
-
-.navbar h2 {
+.dashboard-page h2 {
+  color: #1e1e1e; /* Plus sombre */
   font-weight: 700;
-  color: #ffffff;
-  font-size: 1.3rem;
+  margin-bottom: 2rem;
 }
 
-.nav-links {
+.dashboard-cards {
   display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.nav-links a {
-  color: #f0f0f0;
-  text-decoration: none;
-  font-weight: 500;
-  padding-bottom: 4px;
-  border-bottom: 2px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.nav-links a:hover,
-.nav-links .active {
-  border-bottom: 2px solid #00c3ff;
-  color: #00c3ff;
-}
-
-/* 💳 KPI Cards avec effet au scroll */
-.kpi-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   gap: 2rem;
-  margin: 6rem auto 4rem auto;
-  padding: 2rem;
-  max-width: 1200px;
-  animation: fadeInUp 1s ease both;
+  flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
-.kpi-card {
-  flex: 1 1 250px;
-  background: rgba(255,255,255,0.05);
+.card {
+  background-color: #ffffff;
+  padding: 2rem;
+  width: 300px;
   border-radius: 16px;
-  padding: 2rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-  transition: transform 0.3s ease;
-}
-
-.kpi-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 32px rgba(0,255,255,0.2);
-}
-
-.kpi-card h4 {
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-  color: #00e6ff;
-}
-
-.kpi-card p {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-  color: #ffffff;
-}
-
-/* Scroll Animation */
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 📸 Carte principale chic */
-.glass-card {
-  margin: 4rem auto 4rem auto;
-  padding: 2.5rem;
-  width: 92%;
-  max-width: 1200px;
-  background: rgba(25, 25, 25, 0.85);
-  border-radius: 18px;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  animation: fadeInCard 0.8s ease-in-out;
-}
-
-@keyframes fadeInCard {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.glass-card h3 {
-  font-size: 1.6rem;
-  font-weight: 600;
-  margin-bottom: 1.8rem;
-  color: #ffffff;
-}
-
-/* 🖼️ Galerie d'images moderne */
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
-}
-
-.photo-grid img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 14px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
-  transition: all 0.3s ease;
-  animation: zoomIn 0.8s ease forwards;
-  opacity: 0;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-@keyframes zoomIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.photo-grid img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(0, 255, 255, 0.4);
-}
-
-/* Avatar utilisateur */
-.navbar-avatar {
-  height: 34px;
-  width: 34px;
-  border-radius: 50%;
-  border: 2px solid #888;
-  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   cursor: pointer;
-}
-
-.user-dropdown {
-  position: absolute;
-  top: 60px;
-  right: 2rem;
-  background: #1e1e1e;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-  overflow: hidden;
-  min-width: 160px;
-  display: none;
-  flex-direction: column;
-  z-index: 1001;
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-.user-dropdown.show {
+  transition: all 0.3s ease;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  min-height: 250px;
+  justify-content: center;
+  border: 1px solid #f0f0f0;
 }
 
-.user-dropdown a {
-  padding: 12px 16px;
-  color: #f0f0f0;
-  text-decoration: none;
-  font-size: 14px;
-  transition: background 0.3s;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
-.user-dropdown a:hover {
-  background: rgba(255,255,255,0.05);
+.card h3 {
+  margin: 0;
+  color: #1e1e1e;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.card p {
+  color: #555555;
+  font-size: 0.95rem;
+  text-align: center;
+  max-width: 250px;
+  margin: 0;
+}
+
+.card svg {
+  color: #333333; /* Gris anthracite pour look chic */
+  font-size: 2.8rem;
+  transition: color 0.3s;
+}
+
+.card:hover svg {
+  color: #007bff; /* Bleu doux au hover */
 }

@@ -32,7 +32,7 @@ const EnqueteResponseForm = () => {
     }
 
     if (enqueteId) {
-      axios.get(`http://localhost:9090/enquete/respond/${enqueteId}`)
+      axios.get(`http://localhost:8083/enquete/respond/${enqueteId}`)
         .then((response) => {
           if (response.data?.questions) {
             setEnquete({
@@ -161,7 +161,7 @@ const EnqueteResponseForm = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:9090/enquete/respond/${enqueteId}?userId=${userId}`,
+        `http://localhost:8083/enquete/respond/${enqueteId}?userId=${userId}`,
         reponsesDTO,
         {
           headers: {

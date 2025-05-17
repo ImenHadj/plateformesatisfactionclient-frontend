@@ -1,154 +1,115 @@
-/* 🌐 Reset de base */
+/* Base sobre et pro */
 html, body, #root {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
-  background-image: url('/images/images.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  color: #f0f0f0;
+  background-color: #f5f6fa;
+  color: #2d3436;
 }
 
-/* 🔝 Navbar élégante */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.navbar-logo {
-  height: 40px;
-  margin-right: 1rem;
-  filter: drop-shadow(0 0 5px rgba(0,255,255,0.4));
-}
-
-.navbar h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-
-
-  color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* 📄 Formulaire stylisé centré */
+/* Conteneur */
 .create-enquete-form {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  padding: 8rem 1rem 4rem;
-  background: none;
+  padding: 4rem 1rem;
 }
 
-.enquete-form {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
-  padding: 3rem;
-  max-width: 900px;
-  width: 100%;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  animation: fadeInCard 1s ease-in-out;
-  transform: translateY(-20px);
-  transition: transform 0.5s ease;
-  color: #111;
-}
-
-.enquete-form:hover {
-  transform: translateY(0);
-}
-
-@keyframes fadeInCard {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.form-title {
+/* Titre */
+.form-header {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 2rem;
-  text-align: center;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   text-transform: uppercase;
-  color: #111;
-  border-bottom: 2px solid #00caff;
-  padding-bottom: 10px;
-  animation: fadeInCard 1s ease-in-out;
 }
 
-.form-field {
-  margin-bottom: 1.5rem;
+/* Bloc glass plus doux */
+.form-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
 }
 
-.MuiTextField-root,
-.MuiFormControl-root {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  transition: 0.3s ease;
-  color: #000;
+/* Icones (si utilisées) */
+.icon {
+  margin-right: 10px;
+  color: #555;
 }
 
-.MuiTextField-root:hover,
-.MuiFormControl-root:hover {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
+/* Bloc question */
 .question-form {
-  background: rgba(255, 255, 255, 0.2);
+  background: #f9f9f9;
   padding: 1.5rem;
-  border-radius: 12px;
+  border-radius: 10px;
   margin-bottom: 2rem;
-  border: 1px dashed #00caff;
+  border: 1px dashed #b2bec3;
 }
 
+/* Options */
 .option-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 0.5rem;
-  padding: 0.4rem 0.8rem;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  color: #000;
+  padding: 0.5rem 1rem;
+  background: #eaeff2;
+  border-radius: 6px;
+  color: #2d3436;
 }
 
-.add-question-button,
-.submit-button {
+.option-item:hover {
+  background: #dfe6e9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: scale(1.01);
+}
+
+/* Boutons modernisés */
+.btn-neon, .btn-glass {
   margin-top: 1.5rem;
   width: 100%;
-  padding: 14px 0;
-  font-size: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-radius: 50px;
-  background: linear-gradient(135deg, #00bcd4, #3f51b5);
-  color: white;
-  transition: all 0.4s ease;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease-in-out;
 }
 
-.add-question-button:hover,
-.submit-button:hover {
-  background: linear-gradient(135deg, #3f51b5, #00bcd4);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+/* Bouton Ajouter Question */
+.btn-neon {
+  background-color: #0984e3;
+  color: white;
+  box-shadow: 0 4px 12px rgba(9, 132, 227, 0.4);
+}
+
+.btn-neon:hover {
+  background-color: #0866c2;
+  transform: translateY(-2px);
+}
+
+/* Bouton Créer Enquête */
+.btn-glass {
+  background-color: #2d3436;
+  color: white;
+  box-shadow: 0 4px 12px rgba(45, 52, 54, 0.4);
+}
+
+.btn-glass:hover {
+  background-color: #1e272e;
+  transform: translateY(-2px);
 }

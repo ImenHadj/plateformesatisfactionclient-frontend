@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBars, FaTimes, FaMoon, FaSun, FaTachometerAlt, FaTable, FaCreditCard, FaCog } from "react-icons/fa";
+import { FaBars, FaTimes, FaMoon, FaSun, FaChartBar, FaPlusCircle, FaList, FaFileAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTheme } from "./ThemeContext";
 import "./Layout.css";
@@ -20,20 +20,20 @@ const Layout = ({ children }) => {
 
       <motion.aside
         className="sidebar-modern"
-        initial={{ x: -300 }}
-        animate={{ x: isSidebarOpen ? 0 : -300 }}
+        initial={{ x: -260 }}
+        animate={{ x: isSidebarOpen ? 0 : -260 }}
         transition={{ duration: 0.4 }}
       >
-        <h3 className="sidebar-title">Creative Dashboard</h3>
+        <h3 className="sidebar-title">BackOffice</h3>
         <ul>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li><Link to="/tables">Tables</Link></li>
-          <li><Link to="/billing">Billing</Link></li>
-          <li><Link to="/settings">Settings</Link></li>
+          <li><Link to="/dashboard"><FaChartBar className="icon"/> Dashboard</Link></li>
+          <li><Link to="/create-enquete"><FaPlusCircle className="icon"/> Créer Enquête</Link></li>
+          <li><Link to="/enquetes"><FaList className="icon"/> Liste Enquêtes</Link></li>
+          <li><Link to="/rapports"><FaFileAlt className="icon"/> Rapports</Link></li>
         </ul>
       </motion.aside>
 
-      <main className="main-content" style={{ marginLeft: isSidebarOpen ? 260 : 0 }}>
+      <main className="main-content">
         {children}
       </main>
     </div>

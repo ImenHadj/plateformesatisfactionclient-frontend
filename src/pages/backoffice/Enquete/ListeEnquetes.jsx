@@ -1,148 +1,207 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./ListeEnquetes.css";
-import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
-import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 function ListeEnquetes() {
   const [enquetes, setEnquetes] = useState([]);
-  const [selectedEnquete, setSelectedEnquete] = useState(null);
-  const [error, setError] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [filtered, setFiltered] = useState([]);
+  const [search, setSearch] = useState("");
+  const [statutFilter, setStatutFilter] = useState("ALL");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortKey, setSortKey] = useState("dateCreation");
+  const [sortAsc, setSortAsc] = useState(false);
+  const [modalId, setModalId] = useState(null);
+  const rowsPerPage = 5;
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userInfo = localStorage.getItem("user");
     const token = localStorage.getItem("jwt");
-
-    if (!userInfo || !token) {
-      setError("Vous devez être connecté.");
-      return;
-    }
-
-    const user = JSON.parse(userInfo);
-    const isAdminRole = user.roles?.includes("ROLE_ADMIN");
-    setIsAdmin(isAdminRole);
-
-    if (isAdminRole) {
-      axios
-        .get("http://localhost:8083/admin/enquetes", {
-          headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
-        })
-        .then((res) => setEnquetes(res.data))
-        .catch((err) => {
-          console.error("Erreur Axios :", err);
-          setError(err.response?.data || err.message);
-        });
-    } else {
-      setError("Accès refusé. Vous n'êtes pas administrateur.");
-    }
+    axios
+      .get("http://localhost:8083/admin/enquetes", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setEnquetes(res.data);
+        setFiltered(res.data);
+      });
   }, []);
 
-  const handleDelete = async (id) => {
-    const confirm = window.confirm("Voulez-vous vraiment supprimer cette enquête ?");
-    if (!confirm) return;
+  useEffect(() => {
+    let data = [...enquetes];
+    if (search.trim()) {
+      data = data.filter(
+        (e) =>
+          e.titre.toLowerCase().includes(search.toLowerCase()) ||
+          e.description.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+    if (statutFilter !== "ALL") {
+      data = data.filter((e) => e.statut === statutFilter);
+    }
+    setFiltered(data);
+    setCurrentPage(1);
+  }, [search, statutFilter, enquetes]);
 
-    const token = localStorage.getItem("jwt");
-    try {
-      await axios.delete(`http://localhost:8083/admin/enquetes/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setEnquetes(enquetes.filter((e) => e.id !== id));
-      alert("Enquête supprimée !");
-    } catch (err) {
-      console.error("Erreur suppression :", err);
-      alert("Erreur lors de la suppression.");
+  const sortedData = [...filtered].sort((a, b) => {
+    const valA = new Date(a[sortKey]);
+    const valB = new Date(b[sortKey]);
+    return sortAsc ? valA - valB : valB - valA;
+  });
+
+  const paginated = sortedData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+  const totalPages = Math.ceil(filtered.length / rowsPerPage);
+
+  const getProgress = (e) => {
+    if (e.statut !== "PUBLIEE") return 0;
+    const total = new Date(e.dateExpiration) - new Date(e.datePublication);
+    const remain = new Date(e.dateExpiration) - new Date();
+    return Math.max(0, Math.min(100, Math.floor((remain / total) * 100)));
+  };
+
+  const handleSort = (key) => {
+    if (key === sortKey) setSortAsc(!sortAsc);
+    else {
+      setSortKey(key);
+      setSortAsc(true);
     }
   };
 
-  if (error) return <div className="error-message">{error}</div>;
+  const exportCSV = () => {
+    const rows = [["Titre", "Statut", "Date de création", "Expiration"]];
+    filtered.forEach((e) =>
+      rows.push([
+        e.titre,
+        e.statut,
+        new Date(e.dateCreation).toLocaleDateString(),
+        new Date(e.dateExpiration).toLocaleDateString(),
+      ])
+    );
+    const content = rows.map((r) => r.join(",")).join("\n");
+    const blob = new Blob([content], { type: "text/csv;charset=utf-8" });
+    saveAs(blob, "enquetes.csv");
+  };
+
+  const confirmDelete = (id) => {
+    const token = localStorage.getItem("jwt");
+    axios
+      .delete(`http://localhost:8083/admin/enquetes/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        setEnquetes(enquetes.filter((e) => e.id !== id));
+        setModalId(null);
+      });
+  };
+
+  const isRecent = (dateStr) => {
+    return (new Date() - new Date(dateStr)) / (1000 * 3600 * 24) < 3;
+  };
 
   return (
-    <motion.div
-      className="create-enquete-form"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <nav className="navbar">
-        <h2>Plateforme Satisfaction</h2>
-        <div className="nav-links">
-          <a href="/dashboard">Dashboard</a>
-          <a href="/enquetes" className="active">Mes Enquêtes</a>
-        </div>
-      </nav>
-
-      <div className="liste-enquetes-container">
-        <h2>📋 Liste des Enquêtes</h2>
-
-        {enquetes.length === 0 ? (
-          <p className="text-center">Aucune enquête trouvée.</p>
-        ) : (
-          <div className="enquetes-cards-container">
-            {enquetes.map((e, i) => (
-              <motion.div
-                className="enquete-card"
-                key={e.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-              >
-                <div className="card-header">
-                  <h4>{e.titre}</h4>
-                  <span className={`badge ${e.statut === 'PUBLIÉE' ? 'bg-success' : e.statut === 'FERMÉE' ? 'bg-danger' : 'bg-secondary'}`}>
-                    {e.statut}
-                  </span>
-                </div>
-                <p className="description">{e.description}</p>
-                <div className="card-dates">
-                  <p><strong>Création :</strong> {new Date(e.dateCreation).toLocaleString()}</p>
-                  <p><strong>Expiration :</strong> {new Date(e.dateExpiration).toLocaleString()}</p>
-                  <p><strong>Publication :</strong> {new Date(e.datePublication).toLocaleString()}</p>
-                </div>
-                <div className="card-actions">
-                  <Button onClick={() => navigate(`/enquetes/${e.id}`)} variant="contained" color="primary" size="small" startIcon={<FaEye />}>Voir</Button>
-                  <Button onClick={() => navigate(`/enquete/modifier/${e.id}`)} variant="contained" color="secondary" size="small" startIcon={<FaEdit />}>Modifier</Button>
-                  <Button onClick={() => handleDelete(e.id)} variant="contained" color="error" size="small" startIcon={<FaTrash />}>Supprimer</Button>
-                  <Button variant="text" size="small" onClick={() => setSelectedEnquete(e)}>+ Détails rapides</Button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-
-        {selectedEnquete && (
-          <div className="selected-enquete-detail">
-            <h4>📌 Détails de l'enquête :</h4>
-            <p><strong>Titre :</strong> {selectedEnquete.titre}</p>
-            <p><strong>Description :</strong> {selectedEnquete.description}</p>
-            <p><strong>Statut :</strong> {selectedEnquete.statut}</p>
-            <p><strong>Date de création :</strong> {new Date(selectedEnquete.dateCreation).toLocaleString()}</p>
-            <p><strong>Date de publication :</strong> {new Date(selectedEnquete.datePublication).toLocaleString()}</p>
-            <p><strong>Date d’expiration :</strong> {new Date(selectedEnquete.dateExpiration).toLocaleString()}</p>
-
-            <h5>📑 Questions :</h5>
-            <ul className="ms-3">
-              {selectedEnquete.questions.map((q, idx) => (
-                <li key={idx}>
-                  <strong>{q.texte}</strong> ({q.type})
-                  {q.options?.length > 0 && (
-                    <ul>
-                      {q.options.map((opt, i) => (
-                        <li key={i}>{opt}</li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+    <div className="ultra-container">
+      <div className="table-toolbar">
+        <input
+          type="text"
+          placeholder="🔍 Rechercher une enquête..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select onChange={(e) => setStatutFilter(e.target.value)} value={statutFilter}>
+          <option value="ALL">Tous les statuts</option>
+          <option value="PUBLIEE">✅ Publiée</option>
+          <option value="BROUILLON">📝 Brouillon</option>
+          <option value="EXPIREE">⏰ Expirée</option>
+        </select>
+        <button onClick={exportCSV}>⬇️ Exporter CSV</button>
+        <button onClick={() => { setSearch(""); setStatutFilter("ALL"); }}>♻️ Réinitialiser</button>
       </div>
-    </motion.div>
+
+      <table className="ultra-table">
+        <thead>
+          <tr>
+            <th onClick={() => handleSort("titre")}>📄 Titre</th>
+            <th>Statut</th>
+            <th onClick={() => handleSort("dateCreation")}>📅 Créée</th>
+            <th>📆 Expiration</th>
+            <th>% Restant</th>
+          </tr>
+        </thead>
+        <tbody>
+          {paginated.length > 0 ? (
+            paginated.map((e) => (
+              <tr key={e.id} onClick={() => navigate(`/enquetes/${e.id}`)}>
+                <td title={e.titre}>
+                  {e.titre}
+                  {isRecent(e.dateCreation) && <span className="new-badge">🆕</span>}
+                </td>
+                <td>
+                  <span className={`badge ${e.statut.toLowerCase()}`}>
+                    {e.statut === "PUBLIEE" && "✅ Publiée"}
+                    {e.statut === "BROUILLON" && "📝 Brouillon"}
+                    {e.statut === "EXPIREE" && "⏰ Expirée"}
+                  </span>
+                </td>
+                <td>{new Date(e.dateCreation).toLocaleDateString()}</td>
+                <td>{new Date(e.dateExpiration).toLocaleDateString()}</td>
+                <td>
+                  <div className="circle">
+                    <svg viewBox="0 0 36 36">
+                      <path className="bg" d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831" />
+                      <path
+                        className={`progress ${getProgress(e) > 60 ? 'green' : getProgress(e) > 30 ? 'orange' : 'red'}`}
+                        strokeDasharray={`${getProgress(e)}, 100`}
+                        d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831
+                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                      />
+                      <text x="18" y="20.35" className="percentage">
+                        {getProgress(e)}%
+                      </text>
+                    </svg>
+                  </div>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={5} className="no-results">
+                😕 Aucun résultat trouvé.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+
+      <div className="pagination">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            className={currentPage === i + 1 ? "active" : ""}
+            onClick={() => setCurrentPage(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
+
+      <button className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        ⬆️
+      </button>
+
+      {modalId && (
+        <div className="modal">
+          <div className="modal-box">
+            <h3>⚠️ Confirmation</h3>
+            <p>Supprimer cette enquête ?</p>
+            <div className="modal-actions">
+              <button onClick={() => confirmDelete(modalId)}>✅ Confirmer</button>
+              <button onClick={() => setModalId(null)}>❌ Annuler</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

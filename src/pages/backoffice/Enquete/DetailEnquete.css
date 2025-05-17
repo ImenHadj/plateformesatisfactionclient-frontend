@@ -1,0 +1,387 @@
+/* --- Base container --- */
+.detail-container {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 1rem;
+  background: linear-gradient(145deg, #f0f2f5, #ffffff);
+  min-height: 100vh;
+  animation: fadeIn 1s ease-out;
+}
+
+/* --- Card --- */
+.detail-card {
+  background: #ffffff;
+  padding: 3rem 2.5rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 880px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  animation: slideUp 0.7s ease forwards;
+  opacity: 0;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* --- Titre --- */
+.detail-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+  letter-spacing: -0.5px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Section des infos --- */
+.detail-section p {
+  margin: 1rem 0;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #374151;
+  line-height: 1.6;
+  transition: all 0.3s ease-in-out;
+}
+
+.detail-section p:hover {
+  transform: translateX(5px);
+  color: #1d4ed8;
+}
+
+/* --- Statut --- */
+.status-tag {
+  margin-left: 0.5rem;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+.status-tag.publiee {
+  background-color: #e6f4ea;
+  color: #2e7d32;
+}
+.status-tag.brouillon {
+  background-color: #fff4e5;
+  color: #ef6c00;
+}
+.status-tag.expiree {
+  background-color: #fdecea;
+  color: #c62828;
+}
+
+.status-tag:hover {
+  transform: scale(1.1);
+}
+
+/* --- Section questions --- */
+.question-section {
+  margin-top: 3rem;
+  animation: fadeIn 1.2s ease;
+}
+
+.question-section h3 {
+  font-size: 1.4rem;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  position: relative;
+}
+
+.question-section h3::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  height: 3px;
+  width: 40px;
+  background-color: #2563eb;
+  border-radius: 4px;
+}
+
+.question-section ul {
+  padding-left: 1.5rem;
+  font-size: 1.02rem;
+  color: #2c3e50;
+  line-height: 1.7;
+  list-style: disc;
+  animation: fadeIn 0.8s ease;
+}
+
+/* --- Options --- */
+.options-list {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+  font-size: 0.95rem;
+  color: #555;
+  list-style: circle;
+}
+
+.options-list li {
+  padding-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.options-list li:hover {
+  transform: translateX(4px);
+  color: #3749e9;
+}
+
+/* --- Type de question --- */
+.type-question {
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+/* --- Bouton retour --- */
+.return-button {
+  margin-top: 3rem;
+  padding: 0.85rem 1.8rem;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25);
+}
+
+.return-button:hover {
+  background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+  transform: translateY(-2px);
+}
+
+/* --- Chargement et erreurs --- */
+.error-message,
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #c62828;
+  animation: pulse 0.6s infinite alternate;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+.pdf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f3f4f6;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  border: 1px solid #d1d5db;
+}
+
+.pdf-footer {
+  margin-top: 3rem;
+  text-align: right;
+  font-size: 0.9rem;
+  color: #555;
+  border-top: 1px dashed #ccc;
+  padding-top: 1rem;
+}
+.export-button {
+  animation: pulseBtn 1.5s infinite;
+}
+
+@keyframes pulseBtn {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+.statut-wrapper {
+  margin: 1rem 0;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #374151;
+}
+
+.status-badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: inline-block;
+  box-shadow: 0 0 0 2px transparent;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Couleurs dynamiques */
+.status-badge.publiee {
+  background-color: #e6f4ea;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.status-badge.brouillon {
+  background-color: #fff9e6;
+  color: #ef6c00;
+  border: 1px solid #ffe0b2;
+}
+
+.status-badge.expiree {
+  background-color: #fdecea;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.status-badge:hover {
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+  transform: scale(1.05);
+}
+.countdown-box {
+  margin-top: 1.2rem;
+  background: #e0f2fe;
+  border-left: 5px solid #0284c7;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
+  animation: pulse-countdown 1.5s infinite;
+  max-width: 400px;
+}
+
+.countdown-icon {
+  font-size: 0.95rem;
+  color: #0369a1;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+}
+
+.countdown-value {
+  font-size: 1.3rem;
+  color: #0c4a6e;
+  font-weight: 700;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+@keyframes pulse-countdown {
+  0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(2, 132, 199, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
+}
+
+.countdown-card {
+  margin-top: 1.5rem;
+  border-radius: 16px;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f0faff, #e0f2fe);
+  border-left: 5px solid #0284c7;
+  box-shadow: 0 8px 20px rgba(2, 132, 199, 0.2);
+  max-width: 480px;
+  transition: all 0.4s ease;
+  animation: fadeIn 1s ease;
+}
+
+.countdown-card.safe {
+  border-left-color: #10b981;
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.countdown-card.warning {
+  border-left-color: #f59e0b;
+  background: linear-gradient(135deg, #fff7ed, #ffedd5);
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+}
+
+.countdown-card.urgent {
+  border-left-color: #ef4444;
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+  animation: pulse-red 1.8s infinite;
+}
+
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.countdown-header {
+  font-size: 1rem;
+  color: #0c4a6e;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.countdown-time {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #1e3a8a;
+  letter-spacing: 1px;
+}
+.modifier-button {
+  background-color: #1976d2;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 1rem;
+}
+
+.modifier-button:hover {
+  background-color: #0d47a1;
+}
+.delete-button {
+  background-color: #d32f2f;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 1rem;
+}
+
+.delete-button:hover {
+  background-color: #b71c1c;
+}

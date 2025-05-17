@@ -10,6 +10,8 @@ import LandingPage from './pages/auth/landingpage';
 import { ThemeProvider } from './components/ThemeContext';
 import Layout from "./components/Layout"; // maintenant c’est valide
 import ListeEnquetes from './pages/backoffice/Enquete/ListeEnquetes';
+import DetailEnquete from './pages/backoffice/Enquete/DetailsEnquete';
+import ModifierEnquete from './pages/backoffice/Enquete/ModifierEnquete';
 
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
 
           {/* Front-office (tu choisis si avec ou sans layout) */}
           <Route path="/enquete/respond/:enqueteId" element={<EnqueteResponseForm />} />
+<Route path="/enquetes/:id" element={<Layout><DetailEnquete /></Layout>} />
+<Route path="/enquete/modifier/:id" element={<Layout><ModifierEnquete /></Layout>} />
 
         </Routes>
       </Router>

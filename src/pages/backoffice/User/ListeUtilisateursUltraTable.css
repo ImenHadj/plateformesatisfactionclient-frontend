@@ -1,0 +1,214 @@
+/* Container */
+.ultra-container {
+  max-width: 98%;
+  margin: 2rem auto;
+  font-family: 'Segoe UI', sans-serif;
+  color: #1f2937;
+}
+
+/* Toolbar */
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.table-toolbar input,
+.table-toolbar select,
+.table-toolbar button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.table-toolbar button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+}
+
+.table-toolbar button:hover {
+  background-color: #1e40af;
+  transform: scale(1.02);
+}
+
+/* Table */
+.ultra-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+}
+
+.ultra-table th,
+.ultra-table td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s ease;
+}
+
+.ultra-table th {
+  background-color: #f3f4f6;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.ultra-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Status/Rôle badges */
+.badge {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: fadeInBadge 0.6s ease-in;
+}
+
+@keyframes fadeInBadge {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.badge.publiee {
+  background-color: #e6f4ea;
+  color: #2e7d32;
+}
+.badge.brouillon {
+  background-color: #fff4e5;
+  color: #ef6c00;
+}
+.badge.expiree {
+  background-color: #fdecea;
+  color: #c62828;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  background-color: #e5e7eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination button.active {
+  background-color: #2563eb;
+  color: white;
+}
+
+.pagination button:hover {
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* No results */
+.no-results {
+  text-align: center;
+  font-style: italic;
+  color: #9ca3af;
+  padding: 2rem 0;
+}
+
+/* Action buttons */
+td button {
+  background: none;
+  border: none;
+  color: #4b5563;
+  font-size: 1rem;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+td button:hover {
+  color: #1f2937;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 350px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.modal-box h3 {
+  margin-bottom: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1.5rem;
+}
+
+.modal-actions button {
+  padding: 0.6rem 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-actions button:first-child {
+  background: #16a34a;
+  color: white;
+}
+
+.modal-actions button:last-child {
+  background: #e11d48;
+  color: white;
+}
+
+/* Scroll top */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #1f2937;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.back-to-top:hover {
+  transform: translateY(-4px);
+  background-color: #111827;
+}

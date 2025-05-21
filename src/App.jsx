@@ -12,8 +12,10 @@ import Layout from "./components/Layout"; // maintenant c’est valide
 import ListeEnquetes from './pages/backoffice/Enquete/ListeEnquetes';
 import DetailEnquete from './pages/backoffice/Enquete/DetailsEnquete';
 import ModifierEnquete from './pages/backoffice/Enquete/ModifierEnquete';
-
-
+import ListeUtilisateursUltraTable from './pages/backoffice/User/ListeUtilisateursUltraTable';
+import AjouterUtilisateur from './pages/backoffice/User/AjouterUtilisateur';
+import ModifierUtilisateur from './pages/backoffice/User/ModifierUtilisateur';
+import DetailUtilisateur from './pages/backoffice/User/DetailUtilisateur';
 function App() {
   return (
     <ThemeProvider>
@@ -31,11 +33,14 @@ function App() {
           <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
           <Route path="/create-enquete" element={<Layout><CreateEnqueteForm /></Layout>} />
           <Route path="/enquetes" element={<Layout><ListeEnquetes /></Layout>} />
-
+<Route path="/utilisateurs" element={<Layout><ListeUtilisateursUltraTable /></Layout>} />
+<Route path="/utilisateurs/ajouter" element={<Layout><AjouterUtilisateur /></Layout>} />
+<Route path="/utilisateurs/modifier/:id" element={<Layout><ModifierUtilisateur /></Layout>} />
           {/* Front-office (tu choisis si avec ou sans layout) */}
           <Route path="/enquete/respond/:enqueteId" element={<EnqueteResponseForm />} />
 <Route path="/enquetes/:id" element={<Layout><DetailEnquete /></Layout>} />
 <Route path="/enquete/modifier/:id" element={<Layout><ModifierEnquete /></Layout>} />
+<Route path="/utilisateurs/:id" element={<Layout><DetailUtilisateur /></Layout>} />
 
         </Routes>
       </Router>

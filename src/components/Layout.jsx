@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBars, FaTimes, FaMoon, FaSun, FaChartBar, FaPlusCircle, FaList, FaFileAlt } from "react-icons/fa";
+import { FaBars, FaTimes, FaMoon, FaSun, FaChartBar, FaPlusCircle, FaList, FaFileAlt, FaUsersCog  } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTheme } from "./ThemeContext";
 import "./Layout.css";
@@ -26,11 +26,13 @@ const Layout = ({ children }) => {
       >
         <h3 className="sidebar-title">BackOffice</h3>
         <ul>
-          <li><Link to="/dashboard"><FaChartBar className="icon"/> Dashboard</Link></li>
-          <li><Link to="/create-enquete"><FaPlusCircle className="icon"/> Créer Enquête</Link></li>
-          <li><Link to="/enquetes"><FaList className="icon"/> Liste Enquêtes</Link></li>
-          <li><Link to="/rapports"><FaFileAlt className="icon"/> Rapports</Link></li>
-        </ul>
+  <li><Link to="/dashboard"><FaChartBar className="icon"/> Dashboard</Link></li>
+  <li><Link to="/create-enquete"><FaPlusCircle className="icon"/> Créer Enquête</Link></li>
+  <li><Link to="/enquetes"><FaList className="icon"/> Liste Enquêtes</Link></li>
+  <li><Link to="/rapports"><FaFileAlt className="icon"/> Rapports</Link></li>
+  <li><Link to="/utilisateurs"><FaUsersCog className="icon"/> Utilisateurs</Link></li> {/* 🔥 ajout */}
+</ul>
+
       </motion.aside>
 
       <main className="main-content">

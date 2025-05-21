@@ -1,5 +1,5 @@
 import React from "react";
-import { FaPlusCircle, FaListAlt, FaChartPie } from "react-icons/fa";
+import { FaPlusCircle, FaListAlt, FaChartPie, FaUsersCog } from "react-icons/fa";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -21,6 +21,11 @@ const Dashboard = () => {
           <FaChartPie />
           <h3>Rapports & Stats</h3>
           <p>Analyser vos résultats en un clic.</p>
+        </div>
+        <div className="card" onClick={() => window.location.href = "/utilisateurs"}>
+          <FaUsersCog />
+          <h3>Gestion Utilisateurs</h3>
+          <p>Ajouter, modifier ou désactiver des comptes utilisateurs.</p>
         </div>
       </div>
     </div>

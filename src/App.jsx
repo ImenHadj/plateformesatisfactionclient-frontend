@@ -16,6 +16,9 @@ import ListeUtilisateursUltraTable from './pages/backoffice/User/ListeUtilisateu
 import AjouterUtilisateur from './pages/backoffice/User/AjouterUtilisateur';
 import ModifierUtilisateur from './pages/backoffice/User/ModifierUtilisateur';
 import DetailUtilisateur from './pages/backoffice/User/DetailUtilisateur';
+import ListeReclamations from './pages/backoffice/Reclamation/ListeReclamationsAgent';
+import DetailReclamation from './pages/backoffice/Reclamation/DetailsReclamation';
+import ModifierStatutReclamation from './pages/backoffice/Reclamation/ModifierStatutReclamation';
 function App() {
   return (
     <ThemeProvider>
@@ -36,6 +39,11 @@ function App() {
 <Route path="/utilisateurs" element={<Layout><ListeUtilisateursUltraTable /></Layout>} />
 <Route path="/utilisateurs/ajouter" element={<Layout><AjouterUtilisateur /></Layout>} />
 <Route path="/utilisateurs/modifier/:id" element={<Layout><ModifierUtilisateur /></Layout>} />
+<Route path="/reclamations" element={<Layout><ListeReclamations /></Layout>} />
+<Route path="/reclamations/:id" element={<Layout><DetailReclamation /></Layout>} />
+<Route path="/reclamations/modifier/:id" element={<Layout><ModifierStatutReclamation /></Layout>} />
+
+
           {/* Front-office (tu choisis si avec ou sans layout) */}
           <Route path="/enquete/respond/:enqueteId" element={<EnqueteResponseForm />} />
 <Route path="/enquetes/:id" element={<Layout><DetailEnquete /></Layout>} />

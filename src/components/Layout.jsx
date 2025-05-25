@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBars, FaTimes, FaMoon, FaSun, FaChartBar, FaPlusCircle, FaList, FaFileAlt, FaUsersCog  } from "react-icons/fa";
+import { FaBars, FaTimes, FaMoon, FaSun, FaChartBar, FaPlusCircle, FaList, FaFileAlt, FaUsersCog } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTheme } from "./ThemeContext";
 import "./Layout.css";
@@ -8,6 +8,12 @@ import "./Layout.css";
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { darkMode, toggleTheme } = useTheme();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const roles = user?.roles || [];
+
+  const isAdmin = roles.includes("ROLE_ADMIN");
+  const isAgent = roles.includes("ROLE_AgentBancaire");
 
   return (
     <div className="dashboard">
@@ -26,18 +32,26 @@ const Layout = ({ children }) => {
       >
         <h3 className="sidebar-title">BackOffice</h3>
         <ul>
-  <li><Link to="/dashboard"><FaChartBar className="icon"/> Dashboard</Link></li>
-  <li><Link to="/create-enquete"><FaPlusCircle className="icon"/> Créer Enquête</Link></li>
-  <li><Link to="/enquetes"><FaList className="icon"/> Liste Enquêtes</Link></li>
-  <li><Link to="/rapports"><FaFileAlt className="icon"/> Rapports</Link></li>
-  <li><Link to="/utilisateurs"><FaUsersCog className="icon"/> Utilisateurs</Link></li> {/* 🔥 ajout */}
-</ul>
+          <li><Link to="/dashboard"><FaChartBar className="icon" /> Dashboard</Link></li>
 
+          {isAdmin && (
+            <>
+              <li><Link to="/create-enquete"><FaPlusCircle className="icon" /> Créer Enquête</Link></li>
+              <li><Link to="/utilisateurs"><FaUsersCog className="icon" /> Utilisateurs</Link></li>
+              <li><Link to="/enquetes"><FaList className="icon" /> Liste Enquêtes</Link></li>
+
+            </>
+          )}
+
+          {(isAdmin || isAgent) && (
+            <>
+              <li><Link to="/reclamations"><FaFileAlt className="icon" /> Réclamations</Link></li>
+            </>
+          )}
+        </ul>
       </motion.aside>
 
-      <main className="main-content">
-        {children}
-      </main>
+      <main className="main-content">{children}</main>
     </div>
   );
 };

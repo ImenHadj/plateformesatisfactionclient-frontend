@@ -1,14 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  // Importation correcte
-import SignIn from './pages/auth/SignIn';  // Importation de SignIn
-import SignUp from './pages/auth/SignUp';  // Importation de SignUp
-import ForgotPassword from './pages/auth/Forgotpassword'; // Importation de ForgotPassword
-import ResetPassword from './pages/auth/ResetPassword'; // Importation de ResetPassword
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  
+import SignIn from './pages/auth/SignIn';  
+import SignUp from './pages/auth/SignUp';  
+import ForgotPassword from './pages/auth/Forgotpassword'; 
+import ResetPassword from './pages/auth/ResetPassword';
 import Dashboard from './pages/backoffice/Dashboard';
 import CreateEnqueteForm from './pages/backoffice/Enquete/createenquete';
 import EnqueteResponseForm from './pages/frontoffice/EnqueteResponseForm';
 import LandingPage from './pages/auth/landingpage';
 import { ThemeProvider } from './components/ThemeContext';
-import Layout from "./components/Layout"; // maintenant c’est valide
+import Layout from "./components/Layout"; 
 import ListeEnquetes from './pages/backoffice/Enquete/ListeEnquetes';
 import DetailEnquete from './pages/backoffice/Enquete/DetailsEnquete';
 import ModifierEnquete from './pages/backoffice/Enquete/ModifierEnquete';
@@ -19,7 +19,15 @@ import DetailUtilisateur from './pages/backoffice/User/DetailUtilisateur';
 import ListeReclamations from './pages/backoffice/Reclamation/ListeReclamationsAgent';
 import DetailReclamation from './pages/backoffice/Reclamation/DetailsReclamation';
 import ModifierStatutReclamation from './pages/backoffice/Reclamation/ModifierStatutReclamation';
+import { useEffect } from "react"; 
+import AccueilClient from './pages/frontoffice/AccueilClient';
+import LayoutClient from './components/LayoutClient';
+import CreerReclamation from './pages/frontoffice/CreerReclamation';
+
 function App() {
+ useEffect(() => {
+   
+  }, []);
   return (
     <ThemeProvider>
       <Router>
@@ -49,6 +57,8 @@ function App() {
 <Route path="/enquetes/:id" element={<Layout><DetailEnquete /></Layout>} />
 <Route path="/enquete/modifier/:id" element={<Layout><ModifierEnquete /></Layout>} />
 <Route path="/utilisateurs/:id" element={<Layout><DetailUtilisateur /></Layout>} />
+<Route path="/accueil-client" element={<AccueilClient />} />
+<Route path="/creer-reclamation" element={<CreerReclamation />} />
 
         </Routes>
       </Router>

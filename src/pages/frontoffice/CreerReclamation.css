@@ -1,0 +1,139 @@
+.reclamation-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #fdfdfd;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.reclamation-layout {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 2rem;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.reclamation-form {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  max-width: 500px;
+  width: 100%;
+}
+
+.reclamation-form h2 {
+  font-size: 1.6rem;
+  color: #e26a2c;
+  margin-bottom: 0.5rem;
+}
+
+.reclamation-form p {
+  margin-bottom: 1.2rem;
+  color: #555;
+}
+
+.reclamation-form textarea {
+  width: 100%;
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem;
+  resize: none;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.reclamation-form textarea:focus {
+  outline: none;
+  border-color: #e26a2c;
+}
+
+.send-button.new-style {
+  background: linear-gradient(135deg, #f76b1c, #ffb347);
+  color: white;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 14px rgba(247, 107, 28, 0.4);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.send-button.new-style:hover {
+  box-shadow: 0 6px 20px rgba(247, 107, 28, 0.5);
+  background: linear-gradient(135deg, #f76b1c, #ffa53a);
+}
+
+.send-icon {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+
+.toast-message {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background-color: #d4edda;
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+.toast-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-left-color: #dc3545;
+}
+
+.reclamation-illustration .responsive-image {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* Footer fixed bottom */
+.support-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  padding: 1rem 2rem;
+  background-color: #f1f1f1;
+  color: #555;
+  border-top: 1px solid #ddd;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.support-footer .support-info p {
+  margin: 0;
+}
+
+.footer-rights {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reclamation-layout {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .support-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}

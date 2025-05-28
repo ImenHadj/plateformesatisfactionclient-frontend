@@ -1,0 +1,71 @@
+.navbar-client {
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: white;
+  padding: 14px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Logo --- */
+.logo-client {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-client img {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-client span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffb347;
+  text-shadow: 0 0 6px #ff8c00;
+}
+
+/* --- Center nav links --- */
+.nav-links-client {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+  justify-content: center;
+  flex: 1;
+}
+
+.nav-links-client li a {
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+.nav-links-client li a:hover {
+  background-color: rgba(255, 165, 0, 0.2);
+  color: #ffa500;
+}
+
+/* --- Right logout --- */
+.logout-link a {
+  color: #ff6666;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.logout-link a:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #ff4d4d;
+}

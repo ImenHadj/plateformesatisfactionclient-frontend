@@ -1,9 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { logout } from "../pages/auth/auth";// adapte le chemin si nécessaire
 import "./Navbar.css";
 
 const NavbarClient = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await logout(navigate);
+  };
+
   return (
     <motion.nav
       className="navbar-client"
@@ -18,7 +26,7 @@ const NavbarClient = () => {
       <ul className="nav-links-client">
         <li><Link to="/accueil-client">Accueil</Link></li>
         <li><Link to="/creer-reclamation">Créer Réclamation</Link></li>
-        <li><Link to="/signin">Se déconnecter</Link></li>
+        <li><a href="#logout" onClick={handleLogout}>Se déconnecter</a></li>
       </ul>
     </motion.nav>
   );

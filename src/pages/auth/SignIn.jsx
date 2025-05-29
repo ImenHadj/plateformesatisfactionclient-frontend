@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, TextField, Button, Typography } from '@mui/material';
+import { Container, TextField, Button, Typography, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+
+const CLIENT_ID = '678352302593-efqco2fe19sb705grc97nni2q8k8q49p.apps.googleusercontent.com';
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [errorMessage, setErrorMessage] = useState("");
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,8 +35,34 @@ const SignIn = () => {
       }
     } catch (error) {
       console.error("Erreur lors de la connexion", error);
-      alert("Erreur de connexion. Vérifiez vos informations.");
+      setErrorMessage("Email ou mot de passe incorrect.");
     }
+  };
+
+  const handleGoogleLoginSuccess = async (response) => {
+    const idToken = response.credential;
+    try {
+      const res = await axios.post('http://localhost:8083/api/auth/google', {
+        idToken: idToken,
+      }, { withCredentials: true });
+
+      if (res.status === 200 && res.data.jwt && res.data.user) {
+        const { jwt, user } = res.data;
+        localStorage.setItem("jwt", jwt);
+        localStorage.setItem("user", JSON.stringify(user));
+        alert("Connexion Google réussie !");
+        navigate("/dashboard");
+      } else {
+        alert("Échec de la connexion Google.");
+      }
+    } catch (error) {
+      console.error("Erreur Google login:", error.response?.data || error.message);
+      alert("Erreur lors de la connexion avec Google.");
+    }
+  };
+
+  const handleGoogleLoginError = () => {
+    alert("Erreur lors de la connexion avec Google.");
   };
 
   return (
@@ -72,12 +98,10 @@ const SignIn = () => {
                 borderRadius: 12,
               },
             }}
-            slotProps={{
-              inputLabel: {
-                style: {
-                  color: 'white',
-                  fontWeight: 'bold',
-                },
+            InputLabelProps={{
+              style: {
+                color: 'white',
+                fontWeight: 'bold',
               },
             }}
           />
@@ -98,21 +122,15 @@ const SignIn = () => {
                 borderRadius: 12,
               },
             }}
-            slotProps={{
-              inputLabel: {
-                style: {
-                  color: 'white',
-                  fontWeight: 'bold',
-                },
+            InputLabelProps={{
+              style: {
+                color: 'white',
+                fontWeight: 'bold',
               },
             }}
           />
 
-          <Typography
-            variant="body2"
-            align="right"
-            sx={{ color: '#eee', marginTop: 1, marginBottom: 1 }}
-          >
+          <Typography variant="body2" align="right" sx={{ color: '#eee', marginTop: 1, marginBottom: 1 }}>
             <a href="/forgot-password" style={{ color: 'white', textDecoration: 'underline' }}>
               Forgot password?
             </a>
@@ -138,6 +156,15 @@ const SignIn = () => {
           </Button>
         </form>
 
+        <Divider sx={{ marginY: 2, color: 'white' }}>OR</Divider>
+
+        <GoogleOAuthProvider clientId={CLIENT_ID}>
+          <GoogleLogin
+            onSuccess={handleGoogleLoginSuccess}
+            onError={handleGoogleLoginError}
+          />
+        </GoogleOAuthProvider>
+
         <Typography variant="body2" align="center" sx={{ marginTop: 2, color: '#eee' }}>
           Don't have an account?{' '}
           <a href="/signup" style={{ textDecoration: 'underline', color: 'white' }}>
@@ -150,5 +177,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-

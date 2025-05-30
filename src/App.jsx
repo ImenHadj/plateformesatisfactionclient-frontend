@@ -29,6 +29,8 @@ import CreerReclamation from './pages/frontoffice/CreerReclamation';
 import { ThemeProvider } from './components/ThemeContext';
 import Layout from "./components/Layout"; 
 import LayoutClient from './components/LayoutClient';
+import CustomerSatisfactionReport from './pages/backoffice/CustomerSatisfactionReport';
+
 
 // 🔓 Composant Logout (vide localStorage et redirige)
 const NavigateToLogout = () => {
@@ -60,6 +62,8 @@ function App() {
           <Route path="/enquetes" element={<Layout><ListeEnquetes /></Layout>} />
           <Route path="/enquetes/:id" element={<Layout><DetailEnquete /></Layout>} />
           <Route path="/enquete/modifier/:id" element={<Layout><ModifierEnquete /></Layout>} />
+          <Route path="/rapports" element={<Layout><CustomerSatisfactionReport /></Layout>} />
+
 
           <Route path="/utilisateurs" element={<Layout><ListeUtilisateursUltraTable /></Layout>} />
           <Route path="/utilisateurs/ajouter" element={<Layout><AjouterUtilisateur /></Layout>} />

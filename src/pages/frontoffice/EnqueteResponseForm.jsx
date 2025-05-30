@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Button } from "@mui/material";
 import { useParams, useLocation } from "react-router-dom";
 import { QuestionTypeMapper } from "./QuestionTypeMapper";
 import { QuestionRenderer } from "./QuestionRenderer";
+import { motion, AnimatePresence } from "framer-motion";
+import "./EnqueteResponseForm.css";
 
 const EnqueteResponseForm = () => {
   const { enqueteId } = useParams();
   const location = useLocation();
+
   const [enquete, setEnquete] = useState(null);
   const [reponses, setReponses] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -19,29 +21,34 @@ const EnqueteResponseForm = () => {
   const [remainingTime, setRemainingTime] = useState(null);
   const [countdownColor, setCountdownColor] = useState("green");
 
+  // Charger l'enquête
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const userIdFromUrl = params.get("userId");
 
-    if (userIdFromUrl) {
-      setUserId(userIdFromUrl);
-    } else {
+    if (!userIdFromUrl) {
       setError("L'ID de l'utilisateur est manquant.");
       setIsLoading(false);
       return;
     }
 
+    setUserId(userIdFromUrl);
+
     if (enqueteId) {
-      axios.get(`http://localhost:8083/enquete/respond/${enqueteId}`)
+      axios
+        .get(`http://localhost:8083/enquete/respond/${enqueteId}`)
         .then((response) => {
-          if (response.data?.questions) {
+          const data = response.data;
+          if (data?.questions?.length > 0) {
             setEnquete({
-              ...response.data,
-              questions: response.data.questions.map((q) => ({
+              ...data,
+              questions: data.questions.map((q) => ({
                 ...q,
-                obligatoire: true
-              }))
+                obligatoire: true,
+              })),
             });
+          } else {
+            setError("Aucune question disponible pour cette enquête.");
           }
         })
         .catch((err) => {
@@ -51,13 +58,14 @@ const EnqueteResponseForm = () => {
     }
   }, [enqueteId, location]);
 
+  // Gérer le compte à rebours
   useEffect(() => {
     if (!enquete?.dateExpiration) return;
 
     const interval = setInterval(() => {
       const expirationDate = new Date(enquete.dateExpiration);
       const now = new Date();
-      const diff = expirationDate.getTime() - now.getTime();
+      const diff = expirationDate - now;
 
       if (diff <= 0) {
         setRemainingTime("L'enquête est expirée");
@@ -70,8 +78,7 @@ const EnqueteResponseForm = () => {
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
 
-      const display = `${days}j ${hours}h ${minutes}m ${seconds}s`;
-      setRemainingTime(display);
+      setRemainingTime(`${days}j ${hours}h ${minutes}m ${seconds}s`);
 
       if (diff < 5 * 60 * 1000) setCountdownColor("red");
       else if (diff < 60 * 60 * 1000) setCountdownColor("orange");
@@ -81,18 +88,16 @@ const EnqueteResponseForm = () => {
     return () => clearInterval(interval);
   }, [enquete]);
 
-  const handleChange = (questionId, value) => {
-    setReponses(prev => ({
-      ...prev,
-      [questionId]: value
-    }));
-  };
-
   const isExpired = () => {
     if (!enquete?.dateExpiration) return false;
-    const expirationDate = new Date(enquete.dateExpiration);
-    const now = new Date();
-    return now > expirationDate;
+    return new Date() > new Date(enquete.dateExpiration);
+  };
+
+  const handleChange = (questionId, value) => {
+    setReponses((prev) => ({
+      ...prev,
+      [questionId]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -103,7 +108,16 @@ const EnqueteResponseForm = () => {
       return;
     }
 
-    const missingRequired = enquete.questions.filter(q => q.obligatoire && (reponses[q.id] === undefined || reponses[q.id] === null || reponses[q.id] === "" || (Array.isArray(reponses[q.id]) && reponses[q.id].length === 0)));
+    const missingRequired = enquete.questions.filter((q) =>
+      q.obligatoire &&
+      (
+        reponses[q.id] === undefined ||
+        reponses[q.id] === null ||
+        reponses[q.id] === "" ||
+        (Array.isArray(reponses[q.id]) && reponses[q.id].length === 0)
+      )
+    );
+
     if (missingRequired.length > 0) {
       setFormError("Merci de répondre à toutes les questions obligatoires.");
       return;
@@ -112,122 +126,146 @@ const EnqueteResponseForm = () => {
     }
 
     const reponsesDTO = enquete.questions
-      .filter(question => question.id && reponses[question.id] !== undefined)
-      .map(question => {
-        const responseValue = reponses[question.id];
-        const backendType = QuestionTypeMapper[question.type] || "TEXTE";
+      .filter((q) => reponses[q.id] !== undefined)
+      .map((q) => {
+        const value = reponses[q.id];
+        const type = QuestionTypeMapper[q.type] || "TEXTE";
 
-        const responseDTO = {
-          questionId: Number(question.id),
-          typeReponse: backendType,
+        const dto = {
+          questionId: Number(q.id),
+          typeReponse: type,
         };
 
-        switch (backendType) {
+        switch (type) {
           case "TEXTE":
-            responseDTO.texteReponse = String(responseValue || "");
+            dto.texteReponse = String(value || "");
             break;
-
           case "CHOIX_SIMPLE":
-            responseDTO.choixReponses = [responseValue];
+            dto.choixReponses = [value];
             break;
-
           case "CHOIX_MULTIPLE":
-            responseDTO.choixReponses = Array.isArray(responseValue)
-              ? responseValue
-              : responseValue ? [responseValue] : [];
+            dto.choixReponses = Array.isArray(value) ? value : value ? [value] : [];
             break;
-
           case "NUMERIQUE":
           case "NOTE":
           case "SLIDER":
           case "POURCENTAGE":
           case "DEVISE":
-            responseDTO.valeurNumerique = parseFloat(responseValue || 0);
+            dto.valeurNumerique = parseFloat(value || 0);
             break;
-
           case "DATE_HEURE":
           case "DATE":
           case "HEURE":
           case "CHOIX_COULEUR":
-            responseDTO.texteReponse = responseValue || "";
+            dto.texteReponse = value || "";
             break;
-
           default:
-            responseDTO.texteReponse = String(responseValue || "");
+            dto.texteReponse = String(value || "");
         }
 
-        return responseDTO;
+        return dto;
       });
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `http://localhost:8083/enquete/respond/${enqueteId}?userId=${userId}`,
         reponsesDTO,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        }
+        { headers: { "Content-Type": "application/json" } }
       );
+
       alert("Réponses enregistrées avec succès !");
       setSubmittedAnswers(reponsesDTO);
       setResumeVisible(true);
-    } catch (error) {
-      console.error("Erreur complète:", error);
-      alert(`Erreur: ${error.response?.data?.message || error.message}`);
+    } catch (err) {
+      console.error("Erreur:", err);
+      alert(`Erreur: ${err.response?.data?.message || err.message}`);
     }
   };
 
-  if (isLoading) return <div>Chargement...</div>;
-  if (error) return <div>Erreur: {error}</div>;
-  if (!enquete?.questions?.length) return <div>Aucune question disponible</div>;
+  if (isLoading) return <div className="loading">Chargement...</div>;
+  if (error) return <div className="error">Erreur: {error}</div>;
+  if (!enquete?.questions?.length)
+    return <div className="error">Aucune question disponible</div>;
 
   return (
-    <div>
-      <h2>{enquete.titre}</h2>
-      <p>{enquete.description}</p>
+    <div className="enquete-container">
+      <motion.div
+        className="glass-form"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h2>{enquete.titre}</h2>
+        <p>{enquete.description}</p>
 
-      {!isExpired() && remainingTime && (
-        <p style={{ fontWeight: "bold", color: countdownColor }}>{remainingTime}</p>
-      )}
+        {remainingTime && !isExpired() && (
+          <p className="countdown" style={{ color: countdownColor }}>
+            ⏳ {remainingTime}
+          </p>
+        )}
 
-      {isExpired() && <p style={{ color: "red" }}>⚠️ Cette enquête est expirée.</p>}
+        {isExpired() && <p className="expired">⚠️ Cette enquête est expirée.</p>}
 
-      <form onSubmit={handleSubmit}>
-        {enquete.questions.map((question) => (
-          <div key={`q-${question.id}`} style={{ marginBottom: '20px' }}>
-            <h4>
-              {question.texte} {question.obligatoire && <span style={{ color: "red" }}>*</span>}
-            </h4>
-            <QuestionRenderer
-              question={question}
-              value={reponses[question.id]}
-              onChange={(value) => handleChange(question.id, value)}
-            />
-          </div>
-        ))}
+        <form onSubmit={handleSubmit} className="form-style">
+          {enquete.questions.map((q, index) => (
+            <motion.div
+              key={q.id}
+              className="question-block"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * index }}
+            >
+              <h4>
+                {q.texte}{" "}
+                {q.obligatoire && <span className="required">*</span>}
+              </h4>
+              <QuestionRenderer
+                question={q}
+                value={reponses[q.id]}
+                onChange={(val) => handleChange(q.id, val)}
+              />
+            </motion.div>
+          ))}
 
-        {formError && <p style={{ color: "red" }}>{formError}</p>}
+          {formError && <p className="error-message">{formError}</p>}
 
-        <Button type="submit" variant="contained" color="primary" disabled={isExpired()}>
-          Soumettre
-        </Button>
-      </form>
+          <motion.button
+            type="submit"
+            className="submit-button"
+            disabled={isExpired()}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            ✅ Soumettre
+          </motion.button>
+        </form>
 
-      {resumeVisible && (
-        <div style={{ marginTop: "30px" }}>
-          <h3>🧾 Résumé de vos réponses :</h3>
-          <ul>
-            {submittedAnswers.map((r, i) => (
-              <li key={i}>
-                <strong>Question ID {r.questionId}</strong> :&nbsp;
-                {r.texteReponse || r.valeurNumerique || r.choixReponses?.join(", ") || "Aucune réponse"}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        <AnimatePresence>
+          {resumeVisible && (
+            <motion.div
+              className="resume-section"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 30 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h3>🧾 Résumé de vos réponses :</h3>
+              <ul>
+                {submittedAnswers.map((r, i) => (
+                  <li key={i}>
+                    <strong>Question ID {r.questionId}</strong> :{" "}
+                    {r.texteReponse ??
+                      r.valeurNumerique ??
+                      (r.choixReponses?.length
+                        ? r.choixReponses.join(", ")
+                        : "Aucune réponse")}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 };

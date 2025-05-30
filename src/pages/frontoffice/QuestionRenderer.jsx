@@ -11,7 +11,8 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-  FormLabel
+  FormLabel,
+  Button
 } from "@mui/material";
 
 export const QuestionRenderer = ({ question, value, onChange }) => {
@@ -34,15 +35,16 @@ export const QuestionRenderer = ({ question, value, onChange }) => {
           onChange={(e) => onChange(e.target.value)}
         />
       );
-      case "CHOIX_COULEUR":
-        return (
-          <input
-            type="color"
-            value={value || "#000000"}
-            onChange={(e) => onChange(e.target.value)}
-            style={{ width: "100px", height: "40px", border: "none" }}
-          />
-        );
+
+    case "CHOIX_COULEUR":
+      return (
+        <input
+          type="color"
+          value={value || "#000000"}
+          onChange={(e) => onChange(e.target.value)}
+          style={{ width: "100px", height: "40px", border: "none" }}
+        />
+      );
 
     case "CHOIX_SIMPLE":
       return (
@@ -127,7 +129,6 @@ export const QuestionRenderer = ({ question, value, onChange }) => {
         </FormControl>
       );
 
-   
     case "DATE_HEURE":
       return (
         <TextField
@@ -141,18 +142,42 @@ export const QuestionRenderer = ({ question, value, onChange }) => {
 
     case "FICHIER":
     case "IMAGE":
-    
-    
+      return (
+        <div>
+          <input
+            type="file"
+            accept={question.type === "IMAGE" ? "image/*" : "*"}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              onChange(file); // Peut être File ou URL.createObjectURL(file) selon besoin
+            }}
+          />
+          {value && typeof value === "object" && (
+            <p>Fichier sélectionné : {value.name}</p>
+          )}
+        </div>
+      );
+
     case "SIGNATURE":
-    case "DESSIN":
       return (
         <TextField
-          type="text"
           fullWidth
-          label="Lien ou nom du fichier"
+          label="Lien de la signature (ou base64)"
           value={value || ""}
           onChange={(e) => onChange(e.target.value)}
         />
+        // Possibilité : intégrer un canvas plus tard pour signer à la souris
+      );
+
+    case "DESSIN":
+      return (
+        <TextField
+          fullWidth
+          label="Lien vers dessin ou base64"
+          value={value || ""}
+          onChange={(e) => onChange(e.target.value)}
+        />
+        // Alternativement, vous pouvez intégrer une zone de dessin plus tard
       );
 
     case "MATRICE":

@@ -8,7 +8,7 @@ const CustomerSatisfactionReport = () => {
       </h2>
       <div style={{ height: "90vh", width: "100%" }}>
         <iframe
-          src="http://localhost:3000/public/question/d1adee33-9e73-4149-b950-4e74f618d33f"
+          src="http://localhost:3000/public/dashboard/f41e7785-50ff-426b-8dbb-d0f61b2b4e25"
           frameBorder="0"
           style={{ width: "50%", height: "50%" }}
           allowFullScreen

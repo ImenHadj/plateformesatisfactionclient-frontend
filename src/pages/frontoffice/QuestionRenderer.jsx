@@ -1,32 +1,20 @@
 import React from "react";
 import {
   TextField,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  Checkbox,
   Slider,
-  ListItemText,
   Radio,
   RadioGroup,
   FormControlLabel,
+  FormControl,
   FormLabel,
-  Button
+  Checkbox
 } from "@mui/material";
 
 export const QuestionRenderer = ({ question, value, onChange }) => {
   switch (question.type) {
+    // Réponses ouvertes
     case "OUVERT":
-    case "TEXTE_LONG":
     case "EMAIL":
-    case "URL":
-    case "TELEPHONE":
-    case "CODE_PIN":
-    case "CAPTCHA":
-    case "QR_CODE":
-    case "COULEUR":
-    case "LOCALISATION":
       return (
         <TextField
           fullWidth
@@ -36,16 +24,31 @@ export const QuestionRenderer = ({ question, value, onChange }) => {
         />
       );
 
-    case "CHOIX_COULEUR":
+    case "TEXTE_LONG":
       return (
-        <input
-          type="color"
-          value={value || "#000000"}
+        <TextField
+          fullWidth
+          multiline
+          minRows={4}
+          label="Votre réponse détaillée"
+          value={value || ""}
           onChange={(e) => onChange(e.target.value)}
-          style={{ width: "100px", height: "40px", border: "none" }}
         />
       );
 
+    // Réponse numérique
+    case "NUMERIQUE":
+      return (
+        <TextField
+          fullWidth
+          type="number"
+          label="Votre réponse (numérique)"
+          value={value || ""}
+          onChange={(e) => onChange(Number(e.target.value))}
+        />
+      );
+
+    // Choix simple
     case "CHOIX_SIMPLE":
       return (
         <FormControl component="fieldset">
@@ -66,15 +69,16 @@ export const QuestionRenderer = ({ question, value, onChange }) => {
         </FormControl>
       );
 
+    // Choix multiple
     case "CHOIX_MULTIPLE":
       return (
-        <div>
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Sélectionnez une ou plusieurs réponses</FormLabel>
           {question.options?.map((opt, i) => (
-            <div key={i}>
-              <label>
-                <input
-                  type="checkbox"
-                  value={opt}
+            <FormControlLabel
+              key={i}
+              control={
+                <Checkbox
                   checked={(value || []).includes(opt)}
                   onChange={(e) => {
                     const checked = e.target.checked;
@@ -84,37 +88,14 @@ export const QuestionRenderer = ({ question, value, onChange }) => {
                     onChange(newValue);
                   }}
                 />
-                {opt}
-              </label>
-            </div>
+              }
+              label={opt}
+            />
           ))}
-        </div>
+        </FormControl>
       );
 
-    case "NUMERIQUE":
-    case "NOTE":
-    case "POURCENTAGE":
-    case "DEVISE":
-      return (
-        <TextField
-          type="number"
-          fullWidth
-          value={value || ""}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      );
-
-    case "SLIDER":
-      return (
-        <Slider
-          value={typeof value === "number" ? value : 0}
-          onChange={(_, val) => onChange(val)}
-          min={0}
-          max={10}
-          valueLabelDisplay="auto"
-        />
-      );
-
+    // Oui / Non
     case "OUI_NON":
       return (
         <FormControl component="fieldset">
@@ -129,6 +110,37 @@ export const QuestionRenderer = ({ question, value, onChange }) => {
         </FormControl>
       );
 
+    // Note / Slider
+    case "NOTE":
+    case "SLIDER":
+      return (
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Notez de 0 à 10</FormLabel>
+          <Slider
+            value={typeof value === "number" ? value : 0}
+            onChange={(_, val) => onChange(val)}
+            min={0}
+            max={10}
+            valueLabelDisplay="auto"
+          />
+        </FormControl>
+      );
+
+    // Matrice ou classement
+    case "MATRICE":
+    case "CLASSEMENT":
+      return (
+        <TextField
+          fullWidth
+          multiline
+          minRows={3}
+          label="Réponse formatée (JSON ou texte)"
+          value={value || ""}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      );
+
+    // Date et heure
     case "DATE_HEURE":
       return (
         <TextField
@@ -140,54 +152,12 @@ export const QuestionRenderer = ({ question, value, onChange }) => {
         />
       );
 
-    case "FICHIER":
-    case "IMAGE":
-      return (
-        <div>
-          <input
-            type="file"
-            accept={question.type === "IMAGE" ? "image/*" : "*"}
-            onChange={(e) => {
-              const file = e.target.files[0];
-              onChange(file); // Peut être File ou URL.createObjectURL(file) selon besoin
-            }}
-          />
-          {value && typeof value === "object" && (
-            <p>Fichier sélectionné : {value.name}</p>
-          )}
-        </div>
-      );
-
-    case "SIGNATURE":
+    // Anti-bot
+    case "CAPTCHA":
       return (
         <TextField
           fullWidth
-          label="Lien de la signature (ou base64)"
-          value={value || ""}
-          onChange={(e) => onChange(e.target.value)}
-        />
-        // Possibilité : intégrer un canvas plus tard pour signer à la souris
-      );
-
-    case "DESSIN":
-      return (
-        <TextField
-          fullWidth
-          label="Lien vers dessin ou base64"
-          value={value || ""}
-          onChange={(e) => onChange(e.target.value)}
-        />
-        // Alternativement, vous pouvez intégrer une zone de dessin plus tard
-      );
-
-    case "MATRICE":
-    case "CLASSEMENT":
-      return (
-        <TextField
-          fullWidth
-          multiline
-          minRows={3}
-          label="Réponse formatée (JSON ou texte)"
+          label="Code de sécurité (captcha)"
           value={value || ""}
           onChange={(e) => onChange(e.target.value)}
         />

@@ -22,7 +22,7 @@ export const TypeQuestion = {
     SIGNATURE: "SIGNATURE",
     SLIDER: "SLIDER",
     MATRICE: "MATRICE",
-    CAPTCHA: "CAPTCHA",
+    LIKERT: "LIKERT",
     QR_CODE: "QR_CODE",
     AUDIO: "AUDIO",
     VIDEO: "VIDEO",
@@ -30,5 +30,6 @@ export const TypeQuestion = {
     DESSIN: "DESSIN",
     CODE_PIN: "CODE_PIN",
     CHOIX_COULEUR: "CHOIX_COULEUR",
+    CAPTCHA: "CAPTCHA"
   };
   

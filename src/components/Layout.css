@@ -1,89 +1,326 @@
+/* Conteneur global */
 .dashboard {
   position: relative;
   min-height: 100vh;
   background-color: #f5f7fa;
+  transition: background-color 0.4s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Mode sombre */
+.dashboard.dark-mode {
+  background-color: #121212;
+  color: #d3d6e7;
+}
+
+/* Sidebar modernisée et texturée */
 .sidebar-modern {
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
-  width: 260px;
-  background-color: #1e1e2f;
-  color: #ffffff;
-  padding: 2rem 1rem;
-  z-index: 1000;
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+  width: 280px;
+  padding: 2rem 1.5rem;
+  background: linear-gradient(135deg, #0d1117, #161b22);
+  backdrop-filter: saturate(180%) blur(25px);
+  color: #bec3d8;
+  box-shadow:
+    5px 0 40px rgba(10, 15, 50, 0.7),
+    inset 0 0 60px rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
+  z-index: 1100;
+  user-select: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
+/* Texture très légère (SVG inline) */
+.sidebar-modern::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" fill-opacity="0.03"><circle cx="2" cy="2" r="1" fill="white"/></svg>');
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+  z-index: 1;
+  border-radius: 0 0 0 0;
+}
+
+/* Contenu au-dessus */
+.sidebar-modern > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Titre sidebar */
 .sidebar-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 800;
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
+  letter-spacing: 0.1em;
+  color: #f0c674;
+  text-shadow:
+    0 0 10px #f0c674cc,
+    0 0 20px #f0c674bb;
+  user-select: none;
+  animation: glowText 3s ease-in-out infinite alternate;
 }
 
+/* Glow anim */
+@keyframes glowText {
+  0%, 100% { text-shadow: 0 0 10px #f0c674cc, 0 0 20px #f0c674bb; }
+  50% { text-shadow: 0 0 22px #f0c674ff, 0 0 35px #f0c674ff; }
+}
+
+/* Liste items */
 .sidebar-modern ul {
   list-style: none;
   padding: 0;
+  margin: 0;
+  flex-grow: 1;
 }
 
 .sidebar-modern ul li {
-  margin: 1.5rem 0;
+  position: relative;
+  margin: 1.7rem 0;
+  font-weight: 600;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #bec3d8;
+  cursor: pointer;
+  transition: color 0.3s ease, background 0.4s ease, transform 0.25s ease;
+  border-radius: 12px;
+  padding: 0.4rem 1rem;
+  user-select: none;
 }
 
+/* Hover et focus sur items */
+.sidebar-modern ul li:hover,
+.sidebar-modern ul li:focus-within {
+  color: #f0c674;
+  background: linear-gradient(90deg, rgba(240,198,116,0.15), rgba(240,198,116,0.07));
+  box-shadow:
+    0 0 15px 3px rgba(240, 198, 116, 0.3);
+  outline: none;
+  transform: translateX(6px);
+}
+
+/* Barre survol à gauche */
+.sidebar-modern ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10%;
+  height: 80%;
+  width: 6px;
+  background: transparent;
+  border-radius: 0 5px 5px 0;
+  transition: background 0.3s ease, transform 0.3s ease;
+  transform: scaleY(0);
+  transform-origin: top;
+  pointer-events: none;
+}
+
+.sidebar-modern ul li:hover::before,
+.sidebar-modern ul li:focus-within::before {
+  background: #f0c674;
+  transform: scaleY(1);
+}
+
+/* Liens */
 .sidebar-modern ul li a {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  color: #f0f0f0;
+  gap: 1rem;
+  color: inherit;
   text-decoration: none;
-  font-weight: 500;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  flex-grow: 1;
+  transition: color 0.3s ease, transform 0.3s ease;
+  outline-offset: 6px;
+  user-select: none;
 }
 
-.sidebar-modern ul li a:hover {
-  color: #00c3ff;
-  transform: translateX(8px);
+.sidebar-modern ul li a:hover,
+.sidebar-modern ul li a:focus {
+  color: #f0c674;
+  transform: translateX(10px);
+  outline: none;
 }
 
+/* Icônes */
 .icon {
-  color: #00c3ff;
+  color: #bebfc6;
+  width: 28px;
+  height: 28px;
+  stroke-width: 1.7;
+  filter: drop-shadow(0 0 3px rgba(240,198,116,0.4));
+  transition:
+    color 0.35s ease,
+    transform 0.4s ease,
+    filter 0.6s ease;
+  flex-shrink: 0;
+  will-change: transform, filter;
 }
 
-.main-content {
-  padding: 2rem;
-  width: 100%;
+.sidebar-modern ul li:hover .icon,
+.sidebar-modern ul li:focus-within .icon,
+.sidebar-modern ul li a:hover .icon,
+.sidebar-modern ul li a:focus .icon {
+  color: #f0c674;
+  filter:
+    drop-shadow(0 0 8px #f0c674cc)
+    drop-shadow(0 0 20px #f0c674bb);
+  transform: scale(1.4) rotate(15deg);
+  animation: pulseGlowSidebar 1.5s infinite alternate ease-in-out;
 }
 
-.burger-btn {
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1100;
-  background: #1e1e2f;
-  color: white;
-  border: none;
-  padding: 0.6rem;
-  cursor: pointer;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+/* Pulse glow anim */
+@keyframes pulseGlowSidebar {
+  0% {
+    filter: drop-shadow(0 0 8px #f0c674aa);
+  }
+  100% {
+    filter: drop-shadow(0 0 20px #f0c674dd);
+  }
 }
 
+/* Bouton déconnexion */
+.sidebar-modern ul li[role="button"] {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #ff5c5c;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: color 0.3s ease;
+}
+
+.logout-icon {
+  color: #ff5c5c;
+  transition: color 0.3s ease;
+}
+
+.sidebar-modern ul li[role="button"]:hover .logout-icon,
+.sidebar-modern ul li[role="button"]:focus .logout-icon {
+  color: #fa7c72;
+  filter: drop-shadow(0 0 8px #fa7c72cc);
+  transform: scale(1.3);
+}
+
+/* Boutons burger et toggle thème */
+.burger-btn,
 .theme-toggle {
   position: fixed;
   top: 1rem;
-  right: 1rem;
-  z-index: 1100;
-  background: #1e1e2f;
-  color: white;
-  border: none;
-  padding: 0.6rem;
+  z-index: 1200;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  border: 1.7px solid rgba(255, 255, 255, 0.17);
+  padding: 0.65rem 0.9rem;
+  color: #d3d6e7;
   cursor: pointer;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-size: 1.5rem;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.18),
+    inset 0 0 8px rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    transform 0.5s ease;
+  user-select: none;
+  will-change: transform, box-shadow;
+}
+
+.burger-btn:hover,
+.theme-toggle:hover {
+  background-color: #f0c674;
+  color: #1e1e2f;
+  box-shadow:
+    0 6px 22px #f0c674cc,
+    inset 0 0 16px #f0c674cc;
+  transform: scale(1.15) rotateY(25deg) rotateX(5deg);
+  animation: pulseButton 1.3s infinite alternate ease-in-out;
+}
+
+.burger-btn {
+  left: 1rem;
+}
+
+.theme-toggle {
+  right: 1rem;
+}
+
+/* Anim pulse button */
+@keyframes pulseButton {
+  0% {
+    box-shadow:
+      0 6px 18px #f0c674cc,
+      inset 0 0 18px #f0c674cc;
+  }
+  100% {
+    box-shadow:
+      0 8px 25px #f0c674ff,
+      inset 0 0 24px #f0c674ff;
+  }
+}
+
+/* Décalage contenu main en fonction sidebar */
+.main-content {
+  padding: 2rem;
+  margin-left: 280px;
+  transition: margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100vh;
+  background: var(--main-bg, #f5f7fa);
+}
+
+.main-content.sidebar-open {
+  margin-left: 280px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .sidebar-modern {
+    width: 260px;
+  }
+  .main-content,
+  .main-content.sidebar-open {
+    margin-left: 0;
+  }
+  .burger-btn {
+    top: 1rem;
+    left: 1rem;
+  }
+  .theme-toggle {
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
+/* Scrollbar ultra fine et discrète */
+.sidebar-modern::-webkit-scrollbar {
+  width: 5px;
+  background: transparent;
+}
+
+.sidebar-modern::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f0c674bb, #f0c67499);
+  border-radius: 10px;
+  transition: background 0.4s ease;
+}
+
+.sidebar-modern::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f0c674ff, #f0c674cc);
+}
+
+.sidebar-modern::-webkit-scrollbar-track {
+  background: transparent;
 }

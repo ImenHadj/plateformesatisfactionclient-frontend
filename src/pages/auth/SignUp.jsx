@@ -28,29 +28,36 @@ const Signup = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Les mots de passe ne correspondent pas !");
-      return;
-    }
+  if (formData.password !== formData.confirmPassword) {
+    alert("Les mots de passe ne correspondent pas !");
+    return;
+  }
 
-    const dataToSend = {
-      username: formData.username,
-      email: formData.email,
-      password: formData.password,
-      roles: [formData.role],
-    };
+  if (!formData.role) {
+    alert("Veuillez sélectionner un rôle !");
+    return;
+  }
 
-    try {
-      await axios.post("http://localhost:8083/api/auth/signup", dataToSend);
-      alert("Inscription réussie !");
-    } catch (error) {
-      console.error("Erreur d'inscription", error);
-      alert("Échec de l'inscription");
-    }
+  const dataToSend = {
+    username: formData.username,
+    email: formData.email,
+    password: formData.password,
+    role: [formData.role], // <--- correspond exactement à SignupRequest.getRole()
   };
 
+  try {
+    await axios.post("http://localhost:8083/api/auth/signup", dataToSend);
+    alert("Inscription réussie !");
+  } catch (error) {
+    console.error("❌ Erreur d'inscription", error);
+    alert(error.response?.data || "Échec de l'inscription");
+  }
+};
+
+
+    
   return (
     <div className="wrapper">
       <Container maxWidth="xs" className="login-container">

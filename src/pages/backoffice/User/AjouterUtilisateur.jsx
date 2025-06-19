@@ -19,11 +19,13 @@ function AjouterUtilisateur() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post("http://localhost:8083/api/auth/users", form)
-      .then(() => navigate("/utilisateurs"))
-      .catch(() => setError("Erreur lors de la création de l'utilisateur."));
-  };
+  e.preventDefault();
+  console.log("Données envoyées:", form);
+  axios.post("http://localhost:8083/api/auth/users", form)
+    .then(() => navigate("/utilisateurs"))
+    .catch(() => setError("Erreur lors de la création de l'utilisateur."));
+};
+
 
   return (
     <div className="detail-container">
@@ -60,10 +62,11 @@ function AjouterUtilisateur() {
           <label>
             Rôle
             <select name="role" value={form.role} onChange={handleChange}>
-              <option value="ROLE_Client">Client</option>
-              <option value="ROLE_AgentBancaire">Agent bancaire</option>
-              <option value="ROLE_ADMIN">Administrateur</option>
-            </select>
+  <option value="ROLE_Client">Client</option>
+  <option value="ROLE_AgentBancaire">Agent bancaire</option>
+  <option value="ROLE_ADMIN">Administrateur</option>
+</select>
+
           </label>
 
           <label className="checkbox-wrapper">

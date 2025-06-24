@@ -30,6 +30,8 @@ import { ThemeProvider } from './components/ThemeContext';
 import Layout from "./components/Layout"; 
 import LayoutClient from './components/LayoutClient';
 import CustomerSatisfactionReport from './pages/backoffice/CustomerSatisfactionReport';
+import ClientEnquetePage from './pages/frontoffice/ClientEnquetePage'; 
+import EnqueteResponseFormDynamic from './pages/frontoffice/EnqueteResponseFormDynamic';
 
 
 // 🔓 Composant Logout (vide localStorage et redirige)
@@ -78,6 +80,8 @@ function App() {
           <Route path="/enquete/respond/:enqueteId" element={<EnqueteResponseForm />} />
           <Route path="/accueil-client" element={<AccueilClient />} />
           <Route path="/creer-reclamation" element={<CreerReclamation />} />
+          <Route path="/client/enquetes" element={<ClientEnquetePage />} />
+
 
         </Routes>
       </Router>

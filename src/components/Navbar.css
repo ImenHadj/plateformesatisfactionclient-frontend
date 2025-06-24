@@ -1,72 +1,215 @@
+/* Navbar Client - Version Premium */
+:root {
+  --navbar-bg: rgba(15, 23, 42, 0.9);
+  --primary: #FF6B35;
+  --primary-light: #FF8C5A;
+  --text-light: #F8FAFC;
+  --text-dark: #0F172A;
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
 .navbar-client {
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  color: white;
-  padding: 14px 32px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 0.8rem 5%;
+}
+
+.navbar-glass-container {
+  background: var(--navbar-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 0 0 20px 20px;
+  border: 1px solid var(--glass-border);
+  border-top: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.navbar-content {
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  padding: 0.5rem 2rem;
+  position: relative;
 }
 
-/* Logo à gauche */
+/* Logo stylisé */
 .logo-client {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 1.2rem;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
 }
 
 .logo-client img {
-  height: 45px;
+  height: 50px;
   width: auto;
   object-fit: contain;
-  border-radius: 0; /* pas de cercle */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .logo-client span {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #ffb347;
-  text-shadow: 0 0 6px #ff8c00;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-light);
+  letter-spacing: -0.5px;
+  background: linear-gradient(to right, var(--text-light), #E2E8F0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+  padding-bottom: 5px;
+  background-size: 0% 3px;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  transition: background-size 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Liens centrés */
+/* Navigation premium */
 .nav-links-client {
   display: flex;
-  gap: 40px;
+  gap: 2rem;
   list-style: none;
-  justify-content: center;
-  flex: 1;
+  position: relative;
+}
+
+.nav-links-client li {
+  position: relative;
 }
 
 .nav-links-client li a {
-  color: #f2f2f2;
+  color: var(--text-light);
   text-decoration: none;
-  font-size: 16px;
+  font-size: 1.1rem;
   font-weight: 500;
-  transition: color 0.3s ease, background-color 0.3s ease;
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 0.8rem 1.2rem;
+  position: relative;
+  display: block;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.nav-item-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
 }
 
 .nav-links-client li a:hover {
-  background-color: rgba(255, 165, 0, 0.2);
-  color: #ffa500;
+  color: white;
+  transform: translateY(-2px);
 }
 
-/* Se déconnecter à droite */
-.logout-link a {
-  color: #ff6666;
-  font-weight: 500;
-  padding: 8px 14px;
-  border-radius: 20px;
-  text-decoration: none;
-  transition: all 0.3s ease;
+.nav-links-client li a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), transparent);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.logout-link a:hover {
-  background-color: rgba(255, 0, 0, 0.1);
-  color: #ff4d4d;
+.nav-links-client li a:hover::before {
+  opacity: 1;
+}
+
+/* Bouton de déconnexion stylisé */
+.logout-link {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.logout-link::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logout-link:hover::after {
+  transform: translateX(0);
+}
+
+/* Effet de lumière dynamique */
+.navbar-glass-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 107, 53, 0.1), transparent 70%);
+  animation: rotateLight 20s linear infinite;
+  z-index: -1;
+}
+
+@keyframes rotateLight {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .navbar-content {
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav-links-client {
+    gap: 1rem;
+  }
+  
+  .logo-client span {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-client {
+    padding: 0.5rem;
+  }
+  
+  .navbar-content {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .logo-client {
+    margin-bottom: 1rem;
+  }
+  
+  .nav-links-client {
+    width: 100%;
+    justify-content: space-around;
+  }
+  
+  .nav-links-client li a {
+    padding: 0.6rem;
+    font-size: 1rem;
+  }
 }

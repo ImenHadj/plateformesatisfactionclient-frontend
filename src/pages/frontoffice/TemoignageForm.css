@@ -1,0 +1,60 @@
+/* Styles pour ReactStars */
+.react-stars {
+  display: inline-block !important;
+  direction: ltr;
+  user-select: none;
+  cursor: pointer;
+}
+
+.react-stars svg {
+  width: 30px;
+  height: 30px;
+  fill: #ddd; /* couleur des étoiles vides */
+  transition: fill 0.2s ease;
+}
+
+.react-stars svg:hover,
+.react-stars svg:hover ~ svg {
+  fill: #ffd700 !important; /* couleur étoiles au survol */
+}
+
+.react-stars .react-stars-active {
+  fill: #ffd700 !important; /* couleur étoiles sélectionnées */
+}
+
+/* Conteneur textarea et bouton */
+form textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+form button {
+  background-color: #FF6B35;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #e05a20;
+}
+
+/* Message de succès */
+form p {
+  margin-top: 8px;
+  font-weight: bold;
+}
+.react-stars svg path {
+  stroke: black;
+  stroke-width: 1px;
+}

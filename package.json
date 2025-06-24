@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "@mui/material": "^6.4.12",
     "@react-keycloak/web": "^3.4.0",
     "@react-oauth/google": "^0.12.1",
@@ -19,7 +20,7 @@
     "chart.js": "^4.4.8",
     "file-saver": "^2.0.5",
     "firebase": "^11.8.1",
-    "framer-motion": "^12.18.1",
+    "framer-motion": "^12.19.1",
     "fuse.js": "^7.1.0",
     "html2pdf.js": "^0.10.3",
     "jquery": "^3.7.1",
@@ -34,11 +35,14 @@
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
+    "react-rating-stars-component": "^2.2.0",
     "react-responsive-carousel": "^3.2.23",
-    "react-router-dom": "^7.6.1",
+    "react-router-dom": "^7.6.2",
     "react-spring": "^9.7.5",
     "react-toastify": "^11.0.5",
-    "styled-components": "^6.1.16"
+    "react-tsparticles": "^2.12.2",
+    "styled-components": "^6.1.16",
+    "tsparticles": "^3.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

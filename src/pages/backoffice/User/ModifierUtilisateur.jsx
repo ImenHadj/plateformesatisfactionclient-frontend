@@ -8,6 +8,7 @@ function ModifierUtilisateur() {
   const navigate = useNavigate();
   const [form, setForm] = useState(null);
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     axios.get(`http://localhost:8083/api/auth/users/${id}`)
@@ -22,67 +23,115 @@ function ModifierUtilisateur() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+    
     axios.put(`http://localhost:8083/api/auth/users/${id}`, form)
       .then(() => navigate("/utilisateurs"))
-      .catch(() => setError("Erreur lors de la modification"));
+      .catch((err) => {
+        setError(err.response?.data?.message || "Erreur lors de la modification");
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
-  if (!form) return <div className="loading">Chargement...</div>;
+  if (!form) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Chargement de l'utilisateur...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="detail-container">
-      <div className="detail-card">
-        <h2 className="detail-title">✏️ Modifier l'utilisateur</h2>
+    <div className="form-container">
+      <div className="form-card">
+        <h2 className="form-title">✏️ Modifier l'Utilisateur</h2>
+        
+        {error && (
+          <div className="error-message">
+            ⚠️ {error}
+          </div>
+        )}
 
-        {error && <div className="error-message">{error}</div>}
+        <form onSubmit={handleSubmit} className="user-form">
+          <div className="form-group">
+            <label>
+              <span className="input-label">👔 Nom d'utilisateur</span>
+              <input
+                type="text"
+                name="username"
+                value={form.username}
+                onChange={handleChange}
+                required
+                className="form-input"
+              />
+            </label>
+          </div>
 
-        <form onSubmit={handleSubmit} className="form-style">
-          <label>
-            Nom d'utilisateur
-            <input
-              type="text"
-              name="username"
-              value={form.username}
-              onChange={handleChange}
-              required
-            />
-          </label>
+          <div className="form-group">
+            <label>
+              <span className="input-label">✉️ Email</span>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                className="form-input"
+              />
+            </label>
+          </div>
 
-          <label>
-            Email
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </label>
+          <div className="form-group">
+            <label>
+              <span className="input-label">🎭 Rôle</span>
+              <select 
+                name="role" 
+                value={form.role} 
+                onChange={handleChange}
+                className="form-select"
+              >
+                <option value="ROLE_Client">👤 Client</option>
+                <option value="ROLE_AgentBancaire">🏦 Agent bancaire</option>
+                <option value="ROLE_ADMIN">👑 Administrateur</option>
+              </select>
+            </label>
+          </div>
 
-          <label>
-            Rôle
-            <select name="role" value={form.role} onChange={handleChange}>
-              <option value="ROLE_Client">Client</option>
-              <option value="ROLE_AgentBancaire">Agent bancaire</option>
-              <option value="ROLE_ADMIN">Administrateur</option>
-            </select>
-          </label>
+          <div className="form-group checkbox-group">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="active"
+                checked={form.active}
+                onChange={handleChange}
+                className="checkbox-input"
+              />
+              <span className="checkbox-custom"></span>
+              <span className="checkbox-text">{form.active ? "✅ Actif" : "❌ Inactif"}</span>
+            </label>
+          </div>
 
-          <label className="checkbox-wrapper">
-            <input
-              type="checkbox"
-              name="active"
-              checked={form.active}
-              onChange={handleChange}
-            />
-            Actif
-          </label>
-
-          <button type="submit" className="modifier-button">Enregistrer</button>
-          <button type="button" className="return-button" onClick={() => navigate("/utilisateurs")}>
-  Retour à la liste
-</button>
-
+          <div className="form-actions">
+            <button 
+              type="submit" 
+              className="submit-button"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "⏳ Enregistrement..." : "💾 Enregistrer"}
+            </button>
+            
+            <button 
+              type="button" 
+              className="cancel-button" 
+              onClick={() => navigate("/utilisateurs")}
+            >
+              ↩️ Retour à la liste
+            </button>
+          </div>
         </form>
       </div>
     </div>

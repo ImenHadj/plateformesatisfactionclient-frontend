@@ -190,51 +190,55 @@ function ListeUtilisateursUltraTable() {
   return (
     <div className="ultra-container">
       {/* Stats */}
-      <div className="glass-stats-container">
-        <div className="glass-card card-green">
-          <div className="glass-icon">✅</div>
-          <div className="glass-content">
-            <h4>Utilisateurs actifs</h4>
-            <p>{stats.activeUsers}</p>
-          </div>
-        </div>
-        <div className="glass-card card-red">
-          <div className="glass-icon">🚫</div>
-          <div className="glass-content">
-            <h4>Utilisateurs inactifs</h4>
-            <p>{stats.inactiveUsers}</p>
-          </div>
-        </div>
-        <div className="glass-card card-blue">
-          <div className="glass-icon">🆕</div>
-          <div className="glass-content">
-            <h4>Nouveaux inscrits</h4>
-            <p>{stats.newUsers}</p>
-          </div>
-        </div>
-        <div className="glass-card card-gold">
-          <div className="glass-icon">👑</div>
-          <div className="glass-content">
-            <h4>Admins</h4>
-            <p>{stats.roleDistribution.ROLE_ADMIN || 0}</p>
-          </div>
-        </div>
-        <div className="glass-card card-silver">
-          <div className="glass-icon">👤</div>
-          <div className="glass-content">
-            <h4>Clients</h4>
-            <p>{stats.roleDistribution.ROLE_Client || 0}</p>
-          </div>
-        </div>
-        <div className="glass-card card-navy">
-          <div className="glass-icon">🏦</div>
-          <div className="glass-content">
-            <h4>Agents</h4>
-            <p>{stats.roleDistribution.ROLE_AgentBancaire || 0}</p>
-          </div>
-        </div>
-      </div>
-
+<div className="stats-container">
+  <div className="stat-card card-1">
+    <div className="stat-icon">👥</div>
+    <div className="stat-content">
+      <h4>Utilisateurs</h4>
+      <p>{stats.activeUsers + stats.inactiveUsers}</p>
+    </div>
+  </div>
+  
+  <div className="stat-card card-2">
+    <div className="stat-icon">✅</div>
+    <div className="stat-content">
+      <h4>Actifs</h4>
+      <p>{stats.activeUsers}</p>
+    </div>
+  </div>
+  
+  <div className="stat-card card-3">
+    <div className="stat-icon">🚫</div>
+    <div className="stat-content">
+      <h4>Inactifs</h4>
+      <p>{stats.inactiveUsers}</p>
+    </div>
+  </div>
+  
+  <div className="stat-card card-4">
+    <div className="stat-icon">👑</div>
+    <div className="stat-content">
+      <h4>Admins</h4>
+      <p>{stats.roleDistribution.ROLE_ADMIN || 0}</p>
+    </div>
+  </div>
+  
+  <div className="stat-card card-5">
+    <div className="stat-icon">👤</div>
+    <div className="stat-content">
+      <h4>Clients</h4>
+      <p>{stats.roleDistribution.ROLE_Client || 0}</p>
+    </div>
+  </div>
+  
+  <div className="stat-card card-6">
+    <div className="stat-icon">🏦</div>
+    <div className="stat-content">
+      <h4>Agents</h4>
+      <p>{stats.roleDistribution.ROLE_AgentBancaire || 0}</p>
+    </div>
+  </div>
+</div>
       {/* Filtres et actions */}
       <div className="table-toolbar">
         <input
